@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize this policy to fit your own app's needs. For more guidance, see:
+            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
+        Some notes:
+            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+                * Enable inline JS: add 'unsafe-inline' to default-src
+    -->
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data:'unsafe-inline' gap: https://ssl.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+    <meta charset=utf-8>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">-->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#2196f3">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+
+    <script src="../framework7/js/framework7.min.js"></script>
+    <link rel="stylesheet" href="../framework7/css/framework7.min.css">
+    <!--<link rel="stylesheet" href="../framework7/css/framework7.md.min.css">-->
+    <!--<link rel="stylesheet" href="../framework7/css/framework7.rtl.md.min.css">-->
+    <!--<link rel="stylesheet" href="../framework7/css/framework7.ios.min.css">-->
+
+    <link rel="stylesheet" type="text/css" href="../css/mobileIndex.css">
+    <link rel="stylesheet" href="../css/mobileIcons.css">
+    <link rel="stylesheet" href="../css/mobileApp.css">
+
+    <link rel="shortcut icon" href="../img/logo red-ico-32.jpg">
+
+    <script src="../js/moment/moment.js"></script>
+    <script src="../cordova.js"></script>
+    <title>Gabis Mobile</title>
+</head>
+<body>
+<div id="app">
+    <div class="view view-main">
+        <div class="page" data-name="home">
+            <div class="panel panel-left panel-cover" id="main-panel-left">
+                <div class="page">
+                    <div class="page-content">
+                        <div class="block">
+                            <div class="list links-list">
+                                <ul>
+                                    <li>
+                                        <a href="/home" class="panel-close" data-force="true" data-ignore-cache="true">Вход</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="block" id="main-panel-left-pages">
+                            <div class="block-title">Страницы</div>
+                            <div class="list links-list">
+                                <ul>
+                                    <li>
+                                        <a href="/pageListRecs" class="panel-close" data-force="true" data-ignore-cache="true">Приходы товара</a>
+                                    </li>
+                                    <li>
+                                        <a href="/pageListExcs" class="panel-close" data-force="true" data-ignore-cache="true">Перемещения товара</a>
+                                    </li>
+                                    <li>
+                                        <a href="/pageListInvents" class="panel-close" data-force="true" data-ignore-cache="true">Инвентаризации</a>
+                                    </li>
+                                    <li>
+                                        <a href="/pageReportsCashier" class="panel-close" data-force="true" data-ignore-cache="true">Отчеты кассира</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="block-title">Настройки страниц</div>
+                            <div class="list links-list">
+                                <ul>
+                                    <li>
+                                        <a href="/pageSettingsRecs" class="panel-close">Приходы товара</a>
+                                    </li>
+                                    <li>
+                                        <a href="/pageSettingsExcs" class="panel-close">Перемещения товара</a>
+                                    </li>
+                                    <li>
+                                        <a href="/pageSettingsInvents" class="panel-close">Инвентаризации</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="block" id="main-panel-left-settings">
+                            <div class="block-title">Настройки</div>
+                            <div class="list links-list">
+                                <ul>
+                                    <li>
+                                    <a href="/settingsServerURI" class="panel-close">Сервер</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="left">
+                        <a href="#" class="link icon-only panel-open" data-panel="left">
+                            <i class="icon f7-icons">menu</i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="page-content login-screen-content" id="mobInv-login-screen">
+                <div class="block main-logo">
+                </div>
+                <div class="login-screen-title">Авторизация</div>
+                <div class="list no-hairlines-md">
+                    <ul>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Имя пользователя</div>
+                                <div class="item-input-wrap">
+                                    <input id="login-username" type="text" placeholder="Имя пользователя">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Пароль</div>
+                                <div class="item-input-wrap">
+                                    <input id="login-password" type="password" placeholder="Пароль">
+                                    <span class="input-clear-button"></span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="block">
+                    <div class="row">
+                        <div class="col" style="width:0px"></div>
+                        <button id="login-button" class="col button button-fill button-round" style="width:200px">ВОЙТИ</button>
+                        <div class="col" style="width:0px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var $$=Dom7,
+        baseRoutes=[//-- App routes --
+            { path: '/home', pageName: 'home', options:{clearPreviousHistory:true,ignoreCache:true} },
+            { path: '/settingsServerURI', componentUrl: './settingsServerURI.html'},
+            { path: '(.*)', url: './actionError' }// Default route (404 page). MUST BE THE LAST
+        ],
+        app7  = new Framework7({// Framework7 App main instance
+            id:'io.framework7.mobile.gabis',
+            root: '#app', // app7 root element
+            theme: 'md', // 'auto' - Automatic theme detection, Can be md, ios or aurora
+            routes: baseRoutes,
+            workingDoc:null
+        }),
+        mainView = app7.views.create('.view-main',{domCache:true,stackPages:true});
+
+//    app7.dialog.alert('<span style="font-size:18px">1</span>', "debug")
+
+    $$('#main-panel-left-settings').hide();//IT'S ONLY FOR MOBILE APP
+    $$('#main-panel-left-pages').hide();
+    app7.initData=function(){
+        app7.data={};
+        app7.data.uuid="";document.cookie="uuid=0";
+        app7.data['recsListDocCount']=50;
+        app7.data['excsListDocCount']=50;
+        app7.data['inventsListDocCount']=50;
+        if(typeof(Storage)!=="undefined"){
+            var serverURI=localStorage.getItem("settings-serverURI");
+            if(serverURI)app7.data['serverURI']=serverURI;
+            var username=localStorage.getItem("login-username");
+            if(username&&username.toString().trim()!="")$$('#mobInv-login-screen #login-username').val(username);
+            var recsListDocCount=localStorage.getItem("settings-recs-listDocCount");
+            if(recsListDocCount&&!isNaN(parseInt(recsListDocCount)))app7.data['recsListDocCount']=parseInt(recsListDocCount);
+            var excsListDocCount=localStorage.getItem("settings-excs-listDocCount");
+            if(excsListDocCount&&!isNaN(parseInt(excsListDocCount)))app7.data['excsListDocCount']=parseInt(excsListDocCount);
+            var inventsListDocCount=localStorage.getItem("settings-inventory-listDocCount");
+            if(inventsListDocCount&&!isNaN(parseInt(inventsListDocCount)))app7.data['inventsListDocCount']=parseInt(inventsListDocCount);
+        } else {// Sorry! No Web Storage support..
+        }
+        if(!app7.data['serverURI'])app7.data['serverURI']="http://192.168.56.21:8181";
+    };
+    app7.initData();
+    var serverURI=app7.data['serverURI'];
+    $$('.view-main').on('page:afterin','.page[data-name="home"]',function(e){
+        $$('#main-panel-left-pages').hide();
+        app7.initData();
+        app7.request.setup({ headers: {'uuid':app7.data.uuid} });
+        $$('#mobInv-login-screen #login-password').val("");
+        var username="";
+        if(typeof(Storage)!=="undefined"){
+            username=localStorage.getItem("login-username");
+            if(username)username=username.toString().trim();
+        }else{// Sorry! No Web Storage support..
+        }
+        $$('#mobInv-login-screen #login-username').val(username).focus();
+    });
+
+    $$('#mobInv-login-screen #login-button').on('click',function(){
+        app7.loginProcess();
+    });
+    $$('#mobInv-login-screen #login-password').on('keypress',function(e){
+        if(e.keyCode==13||e.key=='Enter')app7.loginProcess();
+    });
+    app7.loginProcess=function(){
+        var username = $$('#mobInv-login-screen #login-username').val(),
+            password = $$('#mobInv-login-screen #login-password').val();
+        this.srvPostRequestJSON({url:'/login',data:{user:username,pswrd:password},errorDialogMsg:"Вход на сервер неудался!"},
+            function(result,errmsg){
+                $$('#mobInv-login-screen #login-password').val("");
+                if(!result||!result.uuid){
+                    $$('#mobInv-login-screen #login-password').focus(); return;
+                }
+                $$('#mobInv-login-screen #login-username').val("");
+                if (typeof(Storage)!=="undefined") {
+                    localStorage.setItem("login-username",username);
+                } else {// Sorry! No Web Storage support..
+                }
+                app7.data.uuid=result.uuid;
+                app7.request.setup({ headers: {'uuid':result.uuid} });
+                app7.setUserRoutes();
+            });
+    };
+    app7.setUserRoutes=function(){
+        this.srvRequestJSON({url:'/mobile/getUserRoutes', errorDialogMsg:"Не удалось получить данные для загрузки!"},
+            function(result,errmsg){
+                if(!result){
+                    mainView.router.navigate('/home');return;
+                }
+                mainView.router.routes=result;                                                         //console.log("userRoutes",result);
+                var userRoutes={}, definePath;
+                for(var i=0; i<result.length; i++){
+                    var userRoutesItem=result[i];
+                    userRoutes[userRoutesItem.path]=true;
+                    if(!definePath&&userRoutesItem&&userRoutesItem.define) definePath=userRoutesItem.path;
+
+                    if(userRoutesItem&&userRoutesItem.url) userRoutesItem.url=userRoutesItem.url.replace("./mobile/","");
+//                    if(userRoutesItem&&userRoutesItem.componentUrl&&userRoutesItem.path) userRoutesItem.componentUrl=userRoutesItem.path.substr(1,userRoutesItem.path.length-1) +".html";//.replace("/","");
+                    if(userRoutesItem&&userRoutesItem.componentUrl) userRoutesItem.componentUrl=userRoutesItem.componentUrl.replace("/mobile/","")+".html";
+                }
+
+//                $$('#mobInv-login-screen #test1').text(JSON.stringify(result));
+
+                var panelItems=$$("#main-panel-left-pages li a"),hasVisible=false;
+                for(var i=0; i<panelItems.length; i++){
+                    var panelItem=panelItems[i], visible=userRoutes[panelItem.getAttribute("href")];
+                    if(visible)$$(panelItem).show();else $$(panelItem).hide();
+                    hasVisible=visible||hasVisible;
+                }
+                if(hasVisible)$$('#main-panel-left-pages').show();
+                if(!definePath)return;
+                mainView.router.navigate(definePath);
+            });
+    };
+
+    /**
+     * params = { method, url, data/conditions, showRequestErrorDialog, errorDialogMsg }
+     * default: params.method="GET", params.showRequestErrorDialog = true
+     * resultCallback = function(result, errorMessage)
+     *  result = undefined if request failed
+     *  result = null if response result is empty or response result error (parameter errorMessage exists)
+     *  result = JSON response result if request success and response result is JSON
+     *  errorMessage exists if request failed or response result contains error
+     */
+    app7.srvRequestJSON=function(params,callback){
+        if(!params)return;
+        if(!params.method)params.method="GET";
+        if((!window.origin||window.origin=="null"||window.origin.indexOf("file")==0)&&params.url) params.url=serverURI+params.url;
+        var requestData={};
+        if(params.data)requestData=params.data;
+        else if(params.conditions&&typeof(params.conditions)=="string") requestData=params.conditions.replace('=','~');
+        else if(params.conditions)
+            for(var cName in params.conditions) requestData[cName.replace('=','~')]=params.conditions[cName];   //console.log('srvRequestJSON app7.request',params.url,'requestData=',requestData);
+        this.request({method:params.method,url:params.url,data:requestData,
+                headers:{ 'x-requested-with': 'application/json; charset=utf-8' },
+            success:function(data){                                                                             //console.log('srvRequestJSON app7.request',params.url,'success data=',data);
+                var errMsg;
+                if(!params.errorDialogMsg)params.errorDialogMsg='Не удалось получить данные с сервера!';
+                if(data==undefined||data==null) {
+                    if(params.showRequestErrorDialog==false){ callback(null, null);return; }
+                    errMsg=params.errorDialogMsg;
+                }
+                var jsonData;
+                try{
+                    jsonData=JSON.parse(data);
+                }catch (e) {
+                    errMsg=params.errorDialogMsg+'<br>Данные некорректные!';
+                }
+                if(jsonData&&jsonData.error){
+                    if(typeof(jsonData.error)=="string")errMsg=jsonData.error;
+                    else errMsg=(jsonData.error.userMessage||jsonData.error.message||jsonData.error.error);
+                    errMsg=params.errorDialogMsg+"<br>"+errMsg;
+                }
+                if(errMsg&&params.showRequestErrorDialog==false){ callback(null, errMsg);return; }
+                if(errMsg&&app7.srvRequestJSONDialogErr){ app7.srvRequestJSONDialogErr.open(); return; }
+                else if(errMsg){
+                    app7.srvRequestJSONDialogErr = app7.dialog.alert(errMsg, "Внимание", function () {
+                        app7.srvRequestJSONDialogErr = null;
+                        callback(null, errMsg);
+                    });
+                    return;
+                }                                                                                           //console.log('srvRequestJSON app7.request',params.url,'success jsonData=',jsonData);
+                callback(jsonData);
+            },
+            error:function(xhr, status){                                                                    //console.log('srvRequestJSON app7.request',params.url,'error err=',xhr);
+                var state=status,
+                    msg=(!params.errorDialogMsg)?'Не удалось получить данные с сервера!':params.errorDialogMsg;
+                if(params.showRequestErrorDialog==false){
+                    callback(undefined,msg+"<br>Статус="+state);return;
+                }
+                if(state===0){
+                    msg+="<br>Неправильный или недействительный адрес сервера"+
+                        "<br>или доступ по указанному адресу сервера запрещен.";
+                } else
+                    msg+="<br>Не удалось установить связь с сервером по указанному адресу.";
+                msg+="<br>window.origin="+window.origin+"<br>"+JSON.stringify(params);                                            console.log("window.origin=",window.origin,serverURI,"!",this);
+                if(app7.srvRequestJSONDialogErr){
+                    app7.srvRequestJSONDialogErr.open(); return;
+                }
+                app7.srvRequestJSONDialogErr=app7.dialog.alert(msg,"Внимание",function(){
+                    app7.srvRequestJSONDialogErr=null;
+                    callback(undefined,msg);
+                });
+            }
+        });
+    };
+    /**
+     * params = { url, data, showRequestErrorDialog, errorDialogMsg }
+     * default: params.showRequestErrorDialog = true
+     * resultCallback = function(result, errorMessage)
+     *  result = undefined if request failed
+     *  result = null if response result is empty or response result error (parameter errorMessage exists)
+     *  result = JSON response result if request success and response result is JSON
+     *  errorMessage exists if request failed or response result contains error
+     */
+    app7.srvPostRequestJSON=function(params,callback){
+        if(!params)return;
+        params.method="POST";
+        if(!params.errorDialogMsg)params.errorDialogMsg="Не удалось получить результат операции с сервера!";
+        this.srvRequestJSON(params,callback);
+    };
+
+    /** IT'S USED IN INNER PAGE TEMPLATES
+     * dataTableHeader =
+     * <table width="100%" style="position:fixed; top:104px; z-index: 100">
+     *     <thead>
+     *         <tr>
+     *             <th width="40px">№<br>п/п</th>
+     *             <th>Наименование товара<br>Штрихкод</th>
+     *             <th width="50px">Ед.<br>изм.</th>
+     *             <th width="50px">Уч.<br>кол-во</th>
+     *             <th width="50px">Факт.<br>кол-во</th>
+     *         </tr>
+     *     </thead>
+     *     <tbody style="display:none">
+     *         <tr rowSelecting="true">
+     *             <td rowSpan="2" width="40px" class="tdSrcPosID" dataItemName="TSrcPosID"></td>
+     *             <td colSpan="4" class="tdProdName" dataItemName="ProdName"></td>
+     *         </tr>
+     *         <tr rowSelecting="true">
+     *             <td dataItemName="Barcode"></td>
+     *             <td width="50px" class="text-centered" dataItemName="UM"></td>
+     *             <td width="50px" class="tdQty" dataItemName="TQty"></td>
+     *             <td width="50px" class="tdNewQty" dataItemName="TNewQty"
+     *                  onCreated="inventoryTableTDNewQtyOnCreated" onClick="inventoryTableTDNewQtyOnClick"></td>
+     *         </tr>
+     *     </tbody>
+     * </table>
+     *      tr rowSelecting - if row can be selected
+     *      td dataItemName - name of data table row data item value
+     *      td onCreated - name of function called after td has been created,
+     *          function(td,tableDataItem,methods), methods={ rowSelectingMethod, <onClick function name if exists> }
+     *      td onClick - name of function called after td click,
+     *          function(e,dataTableItemName,self), e-onclick event, self-component instatnce
+     * dataTableBody =
+     * <table width="100%" style="margin-bottom: 43px;"></table>
+     * totalTable =
+     * <table width="100%" style="position:fixed; bottom:0px; z-index: 100">
+     *     <tfoot>
+     *         <tr>
+     *             <td id="totalRows" width="40px">0</td>
+     *             <td></td>
+     *             <td id="totalQty" width="50px">0</td>
+     *             <td id="totalNewQty" width="50px">0</td>
+     *         </tr>
+     *     </tfoot>
+     * </table>
+     * totalTable updated in innerPageUpdateTotalTable function
+     * self = component instance
+     * tableDataItem added to table TDs and table TD childs as [dataTableRowData]
+     */
+    app7.innerPageCreateTableRow= function(dataTableHeader, dataTableBody, tableDataItem, self){
+        if(!dataTableHeader||!dataTableBody) return;
+        var dataTableHeaderRows=$$(dataTableHeader).children("tbody").children("tr");
+        if(!dataTableHeaderRows) return;
+        if(!tableDataItem) tableDataItem={};
+        var newTRs=[];
+        for(var i=0; i<dataTableHeaderRows.length; i++){
+            var dthTR=dataTableHeaderRows[i], newTR;
+            newTRs.push(newTR=dthTR.cloneNode(true)); dataTableBody.appendChild(newTR);
+            var rowSelecting=newTR.getAttribute("rowSelecting"),
+                tdOnClickFunction=function(e){
+                    $$(dataTableBody).children('.tdSelectedRow').removeClass('tdSelectedRow');
+                    for(var i=0; i<newTRs.length; i++) newTRs[i].classList.add('tdSelectedRow');
+                };
+            for(var j=0; j<newTR.children.length; j++){
+                var newTD=newTR.children[j], dataTableItemName=newTD.getAttribute("dataItemName"), val;
+                newTD.dataTableRowData=tableDataItem;
+                if(newTD.firstChild)newTD.firstChild.dataTableRowData=tableDataItem;
+                if(dataTableItemName!==undefined)val=tableDataItem[dataTableItemName];
+                let newTDText=newTD.firstChild||newTD;
+                newTDText.innerText=(val==undefined||val==null)?"":val.toString();
+                if(rowSelecting)newTD.onclick=tdOnClickFunction;
+                var onClickMethodName=newTD.getAttribute("onClick");
+                if(onClickMethodName){
+                    var onClickMethod=self[onClickMethodName];
+                    newTD.onclick=function(e){
+                        tdOnClickFunction(e);
+                        onClickMethod(e,tableDataItem,self);
+                    };
+                }
+                var onCreatedMethodName=newTD.getAttribute("onCreated");
+                if(onCreatedMethodName){
+                    var methods={};
+                    if(rowSelecting)methods["rowSelectingMethod"]=tdOnClickFunction;
+                    if(onClickMethodName)methods[onClickMethodName]=self[onClickMethodName];
+                    self[onCreatedMethodName](newTD,tableDataItem,methods);
+                }
+            }
+        }
+    };
+    /** IT'S USED IN INNER PAGE TEMPLATES
+     * dataTableFoot =
+     * <table width="100%" style="position:fixed; bottom:0px; z-index: 100">
+     *     <tfoot>
+     *         <tr>
+     *             <td id="totalRows" width="40px">0</td>
+     *             <td></td>
+     *             <td id="totalQty" width="50px">0</td>
+     *             <td id="totalNewQty" width="50px">0</td>
+     *         </tr>
+     *     </tfoot>
+     * </table>
+     * params = { <td id value>:<value>, .. }
+     */
+    app7.innerPageUpdateTotalTable=function(dataTableFoot, params){
+        if(!params)return;
+        var dataTableFootTR=$$(dataTableFoot).find("tr");
+        for(var valueName in params) dataTableFootTR.find("td#"+valueName).html(params[valueName]);
+    };
+    /** IT'S USED IN INNER PAGE TEMPLATES
+     * self = component instance
+     * params = { dataTableHeader, dataTableBody, progressAction }
+     *      progressAction = function(tableData,ind,tableDataItem), if no ind and no tableDataItem, do last progressAction
+     * finishedCallback = function(tableData)
+     */
+    app7.innerPageFillTableData= function(self, tableData, params, finishedCallback){
+        var progress = 0, progressStep=100/tableData.length;
+        params.progressBarEl = app7.progressbar.show(progress, app7.theme === 'md' ? 'yellow' : 'blue');
+        app7.preloader.show();$$(params.dataTableBody).hide();
+        $$(params.dataTableBody).children("tr").remove();
+        params.progressBarEl=params.progressBarEl; params.progress=progress; params.progressStep=progressStep;
+        app7.fillInnerPageTableDataProgress(self, 0,tableData,params, function(){
+            app7.progressbar.hide(params.progressBarEl);
+            app7.preloader.hide();$$(params.dataTableBody).show();
+            if(params.progressAction)params.progressAction(tableData);
+            if(finishedCallback) finishedCallback(tableData);
+        });
+    };
+    /** IT'S USED IN INNER PAGE TEMPLATES
+     * self = component instance
+     * params = { dataTableHeader, dataTableBody, progressBarEl,progress,progressStep, progressAction }
+     *      progressAction = function(tableData,ind,tableDataItem)
+     * finishedCallback = function(tableData)
+     */
+    app7.fillInnerPageTableDataProgress= function(self, ind,tableData, params, finishedCallback){
+        var timeout=10+Math.round(ind/100);
+        var i=ind, tableDataItem;
+        while(i<ind+10){
+            tableDataItem=tableData[i];
+            if(!tableDataItem)break;
+            app7.innerPageCreateTableRow(params.dataTableHeader,params.dataTableBody, tableDataItem, self);
+            if(params.progressAction)params.progressAction(tableData, ind,tableDataItem);
+            params.progress += params.progressStep;
+            i++;
+        }
+        app7.progressbar.set(params.progressBarEl, params.progress);
+        if(!tableDataItem) {
+            setTimeout(function(){
+                if(finishedCallback)finishedCallback(tableData);
+            },timeout);
+            return;
+        }
+        setTimeout(function(){
+            app7.fillInnerPageTableDataProgress(self, i,tableData, params, finishedCallback)
+        },timeout)
+    };
+</script>
+</body>
+</html>

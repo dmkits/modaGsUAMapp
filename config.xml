@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="ua.com.gabisUA" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>GABIS.UA mobile</name>
+    <description>
+        GABIS.UA mobile app.
+    </description>
+    <author email="dmkitSup@gmail.com" href="http://gabis.com.ua">
+        dmkits 2019
+    </author>
+    <icon src="www/img/logoGS-red-min-app.png" />
+    <content src="pages/index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <preference name="android-minSdkVersion" value="19" />
+    <preference name="KeyboardShrinksView" value="true" />
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+    </platform>
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <plugin name="cordova-plugin-crosswalk-webview" spec="^2.4.0" />
+    <plugin name="cordova-plugin-cipherlab-rs30" spec="https://github.com/mribbons/cordova-plugin-cipherlab-rs30" />
+    <engine name="android" spec="^8.0.0" />
+</widget>

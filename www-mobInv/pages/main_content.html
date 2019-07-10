@@ -1,0 +1,74 @@
+
+<div class="page " data-name="prod_table">
+    <!-- Top Navbar -->
+    <div class="navbar" id="inventoryNavbar'">
+        <div class="navbar-inner">
+            <div class="title sliding">Инвентаризация</div>
+            <div class="subnavbar"  id="inventorySubNavbar">
+                <!--style="background-color: white; padding:0 15px 0 15px;"-->
+
+                <div class="block">
+                    <p class="row">
+                        <input type="number" name="name" id="barCodeInput"  placeholder="Штрихкод товара">
+                        <!--onblur="this.focus()"-->
+<span>
+<button class="col button button-outline button-round" id="enterRowButton">ВВОД</button>
+    <!--style="background-color: #2196f3; float:right"-->
+    <!--enterBarCode()-->
+</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page" id="main_content-view" >
+        <div class="page-content" id="pageConTentInventory">
+            <!--infinite-scroll-content-->
+
+            <!--<div class="block">-->
+                <!--<p class="row">-->
+                    <!--<input  autofocus type="text" name="name" id="barCodeInput" onkeypress="onkeypressFunction(event.keyCode)" placeholder="Штрихкод товара">-->
+                    <!--&lt;!&ndash;onblur="this.focus()"&ndash;&gt;-->
+<!--<span>-->
+<!--<button class="col button button-raised button-round" onclick="createTableRow()">+</button>-->
+    <!--&lt;!&ndash;enterBarCode()&ndash;&gt;-->
+<!--</span>-->
+                <!--</p>-->
+            <!--</div>-->
+
+            <table id="tableWithFixedHead" style="position:fixed; top:104px; z-index: 100">
+                <!--style="width:100%;position:fixed; top:104px; z-index: 100"-->
+                <!--style="width:calc(100% - 10px); margin-bottom: 60px;-->
+
+                <thead>
+                <tr  id="tableFixedHeader">
+                    <th id="num_td" style="width:50px;">№ п/п</th>
+                    <!--<th width="80px;"></th>-->
+                    <th id="code_td" style="width:40%;">Штрих код</th>
+                    <th id="um_td" style="width:50px;">ед.Изм</th>
+                    <th id="doc_qty" style="width:50px;">Учетное кол-во</th>
+                    <th id="real_qty" style="width:50px;">Факт. кол-во</th>
+                </tr>
+                </thead>
+            </table>
+
+            <table id="inventoryTable" style=" margin-bottom: 32px;">
+            </table>
+
+            <table id="tableWithFixedFooter" style="position:fixed; bottom:32px; z-index: 100">
+
+                <!--margin-bottom: 0px; padding-bottom: 60px;-->
+
+                <tfoot>
+                <tr  id="footTableFixedHeader" >
+                    <td id="totalRowQty">0</td>
+                    <td id="totalEmpty" ></td>
+                    <td  id="totalDocQty" >0</td>
+                    <td id="totalRealQty">0</td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

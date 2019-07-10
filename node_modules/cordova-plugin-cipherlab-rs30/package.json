@@ -1,0 +1,73 @@
+{
+  "_args": [
+    [
+      "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+      "/home/dmkits/dev/modaGsUa.prj/modaGsUaMapp.iprj"
+    ]
+  ],
+  "_from": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+  "_id": "cordova-plugin-cipherlab-rs30@1.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/cordova-plugin-cipherlab-rs30",
+  "_phantomChildren": {},
+  "_requested": {
+    "hosted": {
+      "directUrl": "https://raw.githubusercontent.com/mribbons/cordova-plugin-cipherlab-rs30/master/package.json",
+      "gitUrl": "git://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+      "httpsUrl": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+      "shortcut": "github:mribbons/cordova-plugin-cipherlab-rs30",
+      "ssh": "git@github.com:mribbons/cordova-plugin-cipherlab-rs30.git",
+      "sshUrl": "git+ssh://git@github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+      "type": "github"
+    },
+    "name": null,
+    "raw": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+    "rawSpec": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+    "scope": null,
+    "spec": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+    "type": "hosted"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git#c8152c09aee1b6ad91690a9bfcb59ce2daba36bd",
+  "_shasum": "4b527385cb9ba0fcb059e34cad3713728cc94af6",
+  "_shrinkwrap": null,
+  "_spec": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
+  "_where": "/home/dmkits/dev/modaGsUa.prj/modaGsUaMapp.iprj",
+  "author": {
+    "name": "Michael Ribbons"
+  },
+  "bugs": {
+    "url": "https://github.com/mribbons/cordova-plugin-cipherlab-rs30/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-cipherlab-rs30",
+    "platforms": [
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "Apache Cordova Barcode Scanner Plugin for Cipherlab RS30",
+  "devDependencies": {},
+  "gitHead": "c8152c09aee1b6ad91690a9bfcb59ce2daba36bd",
+  "homepage": "https://github.com/mribbons/cordova-plugin-cipherlab-rs30#readme",
+  "keywords": [
+    "barcodescanner",
+    "cordova",
+    "cordova-android",
+    "cordova-cipherlab",
+    "ecosystem:cordova"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-cipherlab-rs30",
+  "optionalDependencies": {},
+  "readme": "# cordova-plugin-cipherlab-rs30\nApache Cordova Barcode Scanner Plugin for Cipherlab RS30\n\n## Supported Platforms\nCipherlab RS30 Scanner\n(BarcodeAPI_V1_0_35.jar)\n\n## Installation\n\n```\ncordova plugin add https://github.com/mribbons/cordova-plugin-cipherlab-rs30\n```\n\n# Sample Code\n\nInitialise the reader manager and filters using initialise:\n\n```\ncordova.plugins.CipherlabRS30CordovaPlugin.initialise()\n```\n\nSubscribe to scans by providing a callback method:\n(This will receive scans triggered by hardware button or software trigger (below)\n```\ncordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data) {\n    append(\"scan received: \" + data);\n});\n```\n\nRequest a scan on button click event:\n```\ndocument.getElementById(\"scan_button\").addEventListener('click', function () {\n\tcordova.plugins.CipherlabRS30CordovaPlugin.requestScan(function () {\n\t\t// This callback doesn't need to do anything, the setReceiveScanCallback callback is what receives the scan data.\n\t});\n});\n```\n\nClean up resources when our app exits:\n```\nwindow.onbeforeunload = function () {\n\tcordova.plugins.CipherlabRS30CordovaPlugin.destroy(function () { });\n}\n```\n\nFull sample (eg index.js):\n```\n(function () {\n    \"use strict\";\n\n    document.addEventListener('deviceready', onDeviceReady.bind(this), false);\n\n    function append(message) {\n        var node = document.createElement(\"p\");\n        node.appendChild(document.createTextNode(message));\n        document.body.appendChild(node);\n    }\n\n    async function onDeviceReady() {\n        // Handle the Cordova pause and resume events\n        document.addEventListener( 'pause', onPause.bind( this ), false );\n        document.addEventListener('resume', onResume.bind(this), false);\n\n        document.getElementById(\"scan_button\").addEventListener('click', function () {\n            cordova.plugins.CipherlabRS30CordovaPlugin.requestScan(function () {\n                // MDR 30/11/2015 - This is just a placeholder callback. Results will be handled by setReceiveScanCallback() parameter below\n            });\n        });\n        \n        // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.\n        await cordova.plugins.CipherlabRS30CordovaPlugin.initialise(async function () {\n\n            append(\"init done\");\n            \n            cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data, type) {\n                append(\"scan received: \" + data + \"(\" + type + \")\");\n            });\n\n            // or alternatively, if your data contains binary data you can get an array of integers:\n            await cordova.plugins.CipherlabRS30CordovaPlugin.setEnableBinaryData(true);\n            cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data, type, binary) { \n                // process binary array\n            }\n        });\n\n        window.onbeforeunload = function () {\n            cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function () { });\n        }\n\n        append(\"setup done\");\n    };\n\n    function onPause() {\n        // TODO: This application has been suspended. Save application state here.\n    };\n\n    function onResume() {\n        // TODO: This application has been reactivated. Restore application state here.\n    };\n} )();\n```\n\n## TODO\n\nReceive barcode types as part of ReceiveScanCallback\n\nImplement scanner configuration support (ReaderOutputConfiguration)\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git"
+  },
+  "version": "1.0.0"
+}
