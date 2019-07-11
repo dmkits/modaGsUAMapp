@@ -168,7 +168,7 @@
             addProdToTable: function(prodData){
                 if(!prodData) prodData={Qty:0,NewQty:0};
                 var existsTDNewQty=$$(this.dataTableBody).children("tr").children("#id_"+prodData["ChID"]+"_"+prodData["SrcPosID"])[0];
-                if(existsTDNewQty){                                                                             console.log("addProdToTable existsTDNewQty",existsTDNewQty.dataTableRowData);
+                if(existsTDNewQty){                                                                             //console.log("addProdToTable existsTDNewQty",existsTDNewQty.dataTableRowData);
                     let oldNewQty=parseFloat(existsTDNewQty.dataTableRowData["NewQty"]), newQty=prodData["NewQty"],
                         oldQty=parseFloat(existsTDNewQty.dataTableRowData["Qty"]), qty=prodData["Qty"];
                     existsTDNewQty.innerText=newQty; existsTDNewQty.Qty=qty;
@@ -194,11 +194,10 @@
             setScroll: function(innerElem){
                 var page=this.pageContenExcData[0],
                     absoluteElementTop = innerElem.getBoundingClientRect().top + page.scrollTop;
-                page.scrollTo(0, absoluteElementTop - (page.clientHeight / 2));
+                page.scrollTop= absoluteElementTop - (page.clientHeight / 2);//page.scrollTo(1, absoluteElementTop - (page.clientHeight / 2));-fail in mobileApp
             },
 
             loadExcData: function(){                                                                            //console.log('pageExcData.html loadExcData excData=',this.item);
-
                 let excData=this.item, excChID=excData.ChID;
                 if(excChID===null||excChID===undefined) return;
                 let cInstance=this;                                                                             //console.log('pageExcData.html loadExcData inventChID=',inventChID, this);
