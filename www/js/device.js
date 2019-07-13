@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
-    // Application Constructor
+var app = {// Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         document.addEventListener( 'pause', this.onPause.bind( this ), false );
@@ -27,38 +26,35 @@ var app = {
     //
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
-    onDeviceReady: function() {
+    onDeviceReady: function(){
         this.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
+    receivedEvent: function(id){
         activateScanReader();
     },
-
     onPause:function(){
         disActivateScanReader();
     },
     onResume:function(){
         activateScanReader();
     }
-
 };
-
 app.initialize();
 
 function activateScanReader(){
     cordova.plugins.
         CipherlabRS30CordovaPlugin.initialise(/* there is no callback here */);
-
     cordova.plugins.
-        CipherlabRS30CordovaPlugin.setReceiveScanCallback(function (data){
-            if(document.getElementById("app")['data-workingDoc'] =='inventory'){
-                createTableRow(data);
-            }
+        CipherlabRS30CordovaPlugin.setReceiveScanCallback(function(data,a,b,c,d){
+            alert(JSON.stringify(data)+"|"+JSON.stringify(a)+"|"+JSON.stringify(b)+"|"+JSON.stringify(c)+"|"+JSON.stringify(d));
+            //if(document.getElementById("app")['data-workingDoc'] =='inventory'){
+            //    createTableRow(data);
+            //}
         });
 }
-
 function disActivateScanReader(){
-    cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function () {
-    alert("destroyed");});
+    cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function(){
+        alert("destroyed");
+    });
 }

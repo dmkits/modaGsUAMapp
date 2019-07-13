@@ -60,6 +60,8 @@ $ cordova create ProgectFolderName com.yourUnigueReversedDomainName AppName
 9. build your project.
 cordova build
 OR
+cordova build android --release
+
 cordova build android --release -- --gradleArg=-PcdvMinSdkVersion=19
 
 It will create apk file in projectdirectory/platforms/android/build/outputs/apk/debug
