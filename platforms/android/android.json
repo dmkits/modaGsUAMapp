@@ -43,6 +43,10 @@
             {
               "xml": "<feature name=\"CipherlabRS30CordovaPlugin\"><param name=\"android-package\" value=\"au.com.micropacific.cordova.CipherlabRS30Plugin\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"StatusBar\"><param name=\"android-package\" value=\"org.apache.cordova.statusbar.StatusBar\" /><param name=\"onload\" value=\"true\" /></feature>",
+              "count": 1
             }
           ]
         }
@@ -56,6 +60,16 @@
             },
             {
               "xml": "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\" />",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "config.xml": {
+        "parents": {
+          "/*": [
+            {
+              "xml": "<feature name=\"Keyboard\"><param name=\"android-package\" onload=\"true\" value=\"org.apache.cordova.labs.keyboard.Keyboard\" /></feature>",
               "count": 1
             }
           ]
@@ -77,6 +91,12 @@
     },
     "cordova-plugin-cipherlab-rs30": {
       "PACKAGE_NAME": "com.modaGsUa"
+    },
+    "cordova-plugin-keyboard": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
     }
   },
   "dependent_plugins": {},
@@ -88,11 +108,29 @@
       "clobbers": [
         "cordova.plugins.CipherlabRS30CordovaPlugin"
       ]
+    },
+    {
+      "id": "cordova-plugin-keyboard.keyboard",
+      "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
+      "pluginId": "cordova-plugin-keyboard",
+      "clobbers": [
+        "window.Keyboard"
+      ]
+    },
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
     }
   ],
   "plugin_metadata": {
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-crosswalk-webview": "2.4.0",
-    "cordova-plugin-cipherlab-rs30": "0.0.3"
+    "cordova-plugin-cipherlab-rs30": "0.0.3",
+    "cordova-plugin-keyboard": "1.2.0",
+    "cordova-plugin-statusbar": "2.4.3"
   }
 }

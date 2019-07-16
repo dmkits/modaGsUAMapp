@@ -14,7 +14,7 @@
     <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data:'unsafe-inline' gap: https://ssl.gstatic.com 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">-->
     <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
     <meta charset=utf-8>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
     <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">-->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#2196f3">
@@ -456,7 +456,7 @@
             app7.progressbar.hide(params.progressBarEl);
             app7.preloader.hide();$$(params.dataTableBody).show();
             if(params.progressAction)params.progressAction(tableData);
-            if(finishedCallback) finishedCallback(tableData);
+            if(finishedCallback) setTimeout(function(){ finishedCallback(tableData); },1);
         });
     };
     /** IT'S USED IN INNER PAGE TEMPLATES
@@ -466,8 +466,7 @@
      * finishedCallback = function(tableData)
      */
     app7.fillInnerPageTableDataProgress= function(self, ind,tableData, params, finishedCallback){
-        var timeout=10+Math.round(ind/100);
-        var i=ind, tableDataItem;
+        var timeout=10+Math.round(ind/100), i=ind, tableDataItem;
         while(i<ind+10){
             tableDataItem=tableData[i];
             if(!tableDataItem)break;
@@ -477,10 +476,8 @@
             i++;
         }
         app7.progressbar.set(params.progressBarEl, params.progress);
-        if(!tableDataItem) {
-            setTimeout(function(){
-                if(finishedCallback)finishedCallback(tableData);
-            },timeout);
+        if(!tableDataItem){
+            if(finishedCallback) setTimeout(function(){ finishedCallback(tableData); },timeout);
             return;
         }
         setTimeout(function(){

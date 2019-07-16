@@ -7,11 +7,29 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "cordova.plugins.CipherlabRS30CordovaPlugin"
       ]
+    },
+    {
+      "id": "cordova-plugin-keyboard.keyboard",
+      "file": "plugins/cordova-plugin-keyboard/www/keyboard.js",
+      "pluginId": "cordova-plugin-keyboard",
+      "clobbers": [
+        "window.Keyboard"
+      ]
+    },
+    {
+      "id": "cordova-plugin-statusbar.statusbar",
+      "file": "plugins/cordova-plugin-statusbar/www/statusbar.js",
+      "pluginId": "cordova-plugin-statusbar",
+      "clobbers": [
+        "window.StatusBar"
+      ]
     }
   ];
   module.exports.metadata = {
     "cordova-plugin-whitelist": "1.3.4",
     "cordova-plugin-crosswalk-webview": "2.4.0",
-    "cordova-plugin-cipherlab-rs30": "0.0.3"
+    "cordova-plugin-cipherlab-rs30": "0.0.3",
+    "cordova-plugin-keyboard": "1.2.0",
+    "cordova-plugin-statusbar": "2.4.3"
   };
 });

@@ -57,9 +57,15 @@ $ cordova create ProgectFolderName com.yourUnigueReversedDomainName AppName
 
 8. cordova platform add android
 
+change in gradle.properties
+cdvMinSdkVersion=19
+
 9. build your project.
 cordova build
 OR
+cordova build android
+
+OR for release build:
 cordova build android --release
 
 cordova build android --release -- --gradleArg=-PcdvMinSdkVersion=19
@@ -87,3 +93,14 @@ avd.target = 'Android ' + (level ? level.semver : '') + ' (API level ' + api_lev
 
 cordova plugin add cordova-plugin-crosswalk-webview
 cordova plugin add cordova-plugin-splashscreen
+
+12. other plugins
+
+cordova plugin add cordova-plugin-keyboard
+use:
+    window.Keyboard.shrinkView(false);
+    //window.Keyboard.hideFormAccessoryBar(true);
+
+cordova plugin add cordova-plugin-statusbar
+use:
+    window.StatusBar

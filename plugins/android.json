@@ -20,6 +20,12 @@
     },
     "cordova-plugin-cipherlab-rs30": {
       "PACKAGE_NAME": "com.modaGsUa"
+    },
+    "cordova-plugin-keyboard": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
     }
   },
   "dependent_plugins": {}

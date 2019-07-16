@@ -13,6 +13,8 @@
     "cordova-android": "^8.0.0",
     "cordova-plugin-cipherlab-rs30": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
     "cordova-plugin-crosswalk-webview": "^2.4.0",
+    "cordova-plugin-keyboard": "^1.2.0",
+    "cordova-plugin-statusbar": "^2.4.3",
     "cordova-plugin-whitelist": "^1.3.4"
   },
   "cordova": {
@@ -25,7 +27,9 @@
         "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
         "XWALK_MODE": "embedded",
         "XWALK_MULTIPLEAPK": "true"
-      }
+      },
+      "cordova-plugin-keyboard": {},
+      "cordova-plugin-statusbar": {}
     },
     "platforms": [
       "android"
