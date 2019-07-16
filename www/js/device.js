@@ -48,22 +48,22 @@ function setUp(){
     //window.Keyboard.hideFormAccessoryBar(true);
     window.StatusBar.hide();                                                                                    //alert("setUp!");//IT'S FOR TEST
 }
-function scanReaderCallback(){
-    alert(JSON.stringify(data)+"|"+JSON.stringify(a)+"|"+JSON.stringify(b)+"|"+JSON.stringify(c)+"|"+JSON.stringify(d));
+function scanReaderCallback(data,fdata){
+    alert(JSON.stringify(data)+"|"+JSON.stringify(fdata));
     //if(document.getElementById("app")['data-workingDoc'] =='inventory'){
     //    createTableRow(data);
     //}
 }
 function scanReaderActivate(){
-    if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
-    cordova.plugins.CipherlabRS30CordovaPlugin.initialise(/* there is no callback here */);
-    cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function(data,fdata){
-        scanReaderCallback(data,fdata)
-    });
+    //if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
+    //cordova.plugins.CipherlabRS30CordovaPlugin.initialise(/* there is no callback here */);
+    //cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function(data,fdata){
+    //    scanReaderCallback(data,fdata)
+    //});
 }
 function scanReaderDisactivate(){
-    if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
-    cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function(){
-        alert("destroyed");
-    });
+    //if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
+    //cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function(){
+    //    alert("destroyed");
+    //});
 }
