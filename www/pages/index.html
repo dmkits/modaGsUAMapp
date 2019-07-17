@@ -83,11 +83,11 @@
                             </div>
                         </div>
                         <div class="block" id="main-panel-left-settings">
-                            <div class="block-title">Настройки</div>
+                            <div class="block-title">Общие настройки</div>
                             <div class="list links-list">
                                 <ul>
                                     <li>
-                                    <a href="/pageSettingsServerURI" class="panel-close">Сервер</a>
+                                    <a href="/pageSettingsCommon" class="panel-close">Доступ и устройство</a>
                                     </li>
                                 </ul>
                             </div>
@@ -139,7 +139,6 @@
                                 <i class="icon icon-checkbox"></i>
                                 <div class="item-title">Запомнить меня</div>
                             </label>
-
                         </div>
                         <div class="col" style="width:0px"></div>
                     </div>
@@ -157,7 +156,7 @@
     var $$=Dom7,
         baseRoutes=[//-- App routes --
             { path: '/home', pageName: 'home', options:{clearPreviousHistory:true,ignoreCache:true} },
-            { path: '/pageSettingsServerURI', componentUrl: 'pageSettingsServerURI.html'},
+            { path: '/pageSettingsCommon', componentUrl: 'pageSettingsCommon.html'},
             { path: '(.*)', url: './actionError' }// Default route (404 page). MUST BE THE LAST
         ],
         app7  = new Framework7({// Framework7 App main instance
@@ -173,12 +172,15 @@
     app7.initData=function(){
         app7.data={};
         app7.data.uuid="";document.cookie="uuid=0";
+        app7.data['useBCScanner']=false;
         app7.data['recsListDocCount']=50;
         app7.data['excsListDocCount']=50;
         app7.data['inventsListDocCount']=50;
         if(typeof(Storage)!=="undefined"){
             var serverURI=localStorage.getItem("settings-serverURI");
             if(serverURI)app7.data['serverURI']=serverURI;
+            var useBCScanner=localStorage.getItem("settings-useBCScanner")=="true";
+            if(useBCScanner)app7.data['useBCScanner']=useBCScanner;
             var recsListDocCount=localStorage.getItem("settings-recs-listDocCount");
             if(recsListDocCount&&!isNaN(parseInt(recsListDocCount)))app7.data['recsListDocCount']=parseInt(recsListDocCount);
             var excsListDocCount=localStorage.getItem("settings-excs-listDocCount");
