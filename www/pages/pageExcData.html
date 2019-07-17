@@ -139,11 +139,14 @@
                 $$('#pageExcDataToolbar #pageExcDataBarCodeInput').on('keypress',function(e){
                     if(e.keyCode==13||e.key=='Enter')self.barcodeInputEnter();
                 });
+
+//                if(scanReaderCallback) alert("scanReaderCallback");
+
                 this.loadExcData();
             },
             pageAfterOut: function(e,page){
                 if(this.progressBarEl)this.$app.progressbar.hide(this.progressBarEl);
-            },
+            }
         },
         data: function(){
             let excData={},listExcs=this.$app.data.pageListExcs.listExcs;
@@ -196,7 +199,6 @@
                     absoluteElementTop = innerElem.getBoundingClientRect().top + page.scrollTop;
                 page.scrollTop= absoluteElementTop - (page.clientHeight / 2);//page.scrollTo(1, absoluteElementTop - (page.clientHeight / 2));-fail in mobileApp
             },
-
             loadExcData: function(){                                                                            //console.log('pageExcData.html loadExcData excData=',this.item);
                 this.setInputProdBarcodeByState({focus:true,enable:false});
                 let excData=this.item, excChID=excData.ChID;
@@ -209,6 +211,7 @@
                         app7.preloader.hide();
                         let resultItems=(result)?result.items:null;
                         self.items=resultItems;
+                        if(!resultItems){ self.setInputProdBarcodeByState(); return; }
                         app7.data.pageExcData={inventDataItems:resultItems};                                    //console.log('pageExcData.html loadExcData resultItems=',resultItems);
                         var params={ dataTableHeader:self.dataTableHeader, dataTableBody:self.dataTableBody,
                             progressAction:function(tableData, ind,tableDataItem){
