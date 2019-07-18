@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {// Application Constructor
+var device = {// Application Constructor
     initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
         document.addEventListener( 'pause', this.onPause.bind( this ), false );
@@ -31,39 +31,36 @@ var app = {// Application Constructor
     },
     // Update DOM on a Received Event
     receivedEvent: function(id){
-        setUp();
-        scanReaderActivate();
+        this.setUp();
+        this.barcodeScannerReaderActivate();
     },
-    onPause:function(){
-        scanReaderDisactivate();
+    onPause: function(){
+        this.barcodeScannerReaderDisactivate();
     },
-    onResume:function(){
-        scanReaderActivate();
+    onResume: function(){
+        this.barcodeScannerReaderActivate();
+    },
+
+    setUp: function(){
+        window.Keyboard.shrinkView(false);
+        //window.Keyboard.hideFormAccessoryBar(true);
+        window.StatusBar.hide();                                                                                //alert("setUp!");//IT'S FOR TEST
+    },
+    barcodeScannerReaderActivate: function(){
+        if(!cordova || !cordova.plugins || !cordova.plugins.CipherlabRS30CordovaPlugin) return;
+        cordova.plugins.CipherlabRS30CordovaPlugin.initialise(/* there is no callback here */);
+        cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function(data,fdata){
+            deviceBarcodeScannerReaderAction(data,fdata)
+        });                                                                                                     //alert("barcodeScannerReaderActivated!");//IT'S FOR TEST
+    },
+    barcodeScannerReaderDisactivate: function(){
+        if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin) return;
+        cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function(){                                          //alert("barcodeScannerReaderDisactivated!");//IT'S FOR TEST
+        });
     }
 };
-app.initialize();
+device.initialize();
 
-function setUp(){
-    window.Keyboard.shrinkView(false);
-    //window.Keyboard.hideFormAccessoryBar(true);
-    window.StatusBar.hide();                                                                                    //alert("setUp!");//IT'S FOR TEST
-}
-function scanReaderCallback(data,fdata){
-    alert(JSON.stringify(data)+"|"+JSON.stringify(fdata));
-    //if(document.getElementById("app")['data-workingDoc'] =='inventory'){
-    //    createTableRow(data);
-    //}
-}
-function scanReaderActivate(){
-    //if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
-    //cordova.plugins.CipherlabRS30CordovaPlugin.initialise(/* there is no callback here */);
-    //cordova.plugins.CipherlabRS30CordovaPlugin.setReceiveScanCallback(function(data,fdata){
-    //    scanReaderCallback(data,fdata)
-    //});
-}
-function scanReaderDisactivate(){
-    //if(!cordova||!cordova.plugins||!cordova.plugins.CipherlabRS30CordovaPlugin)return
-    //cordova.plugins.CipherlabRS30CordovaPlugin.destroy(function(){
-    //    alert("destroyed");
-    //});
+function deviceBarcodeScannerReaderAction(data,fdata){                                                          //alert(JSON.stringify(data)+"|"+JSON.stringify(fdata));//IT'S FOR TEST
+    //IT'S for used globally for barcode scanner use action
 }
