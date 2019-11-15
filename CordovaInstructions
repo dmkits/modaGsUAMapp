@@ -73,9 +73,13 @@ cordova build android --release -- --gradleArg=-PcdvMinSdkVersion=19
 It will create apk file in projectdirectory/platforms/android/build/outputs/apk/debug
 
 10. create AndroidStudio emulator
+$ /home/dmkits/android-studio/bin/studio.sh
 (you can create an empty project or open existing one)
 AndroidStudio > Tools > AVD Manager
 and start Your Virtual Device (Nexus 5X API 29 x86)
+
+if not start AndroidStudio AVD run:
+$ sudo chmod a=rw /dev/kvm
 
 $ cordova emulate android
 
