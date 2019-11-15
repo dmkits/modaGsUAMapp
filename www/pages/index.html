@@ -179,7 +179,7 @@
     $$('#main-panel-left-pages').hide();
     app7.initData=function(){
         app7.data={};
-        app7.data.uuid="";document.cookie="uuid=0";
+        app7.data.uuid="";  app7.data.aidcn="gabis";//application id config name
         $$('#appbar-user').text("");$$('#appbar-modeMsg').text("");
         app7.data['useBCScanner']=false;
         app7.data['recsListDocCount']=50;
@@ -223,7 +223,7 @@
         $$('#main-panel-left-pages').hide();
         app7.initData();
         app7.setLoginStoredData();
-        app7.request.setup({ headers: {'uuid':app7.data.uuid} });
+        app7.request.setup({ headers: {'uuid':app7.data.uuid,'aidcn':app7.data.aidcn} });
         $$('#mobileLogin-screen #mobileLogin-inputUsername').focus();
     });
     $$('#mobileLogin-screen #mobileLogin-btnLogin').on('click',function(){
@@ -235,8 +235,10 @@
     app7.loginProcess=function(){
         var username = $$('#mobileLogin-screen #mobileLogin-inputUsername').val(),
             password = $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val();
+        app7.preloader.show();
         this.srvPostRequestJSON({url:'/login',data:{user:username,pswrd:password},errorDialogMsg:"Вход на сервер неудался!"},
             function(result,errmsg){
+                app7.preloader.hide();
                 $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val("");
                 var mode=(result)?result.mode:null,modeIsDebug=(result)?result.modeIsDebug:null;
                 app7.data["appMode"]=mode; app7.data["appModeMsg"]= "";
@@ -270,13 +272,15 @@
                 }else{// Sorry! No Web Storage support..
                 }
                 app7.data.uuid=result.uuid;
-                app7.request.setup({ headers: {'uuid':result.uuid} });
+                app7.request.setup({ headers: {'uuid':result.uuid,'aidcn':app7.data.aidcn} });
                 app7.setUserRoutes();
             });
     };
     app7.setUserRoutes=function(){
+        app7.preloader.show();
         this.srvRequestJSON({url:'/mobile/getUserRoutes', errorDialogMsg:"Не удалось получить данные для загрузки!"},
             function(result,errmsg){
+                app7.preloader.hide();
                 if(!result){
                     mainView.router.navigate('/home');return;
                 }
