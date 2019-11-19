@@ -150,7 +150,7 @@
                 var existsTDNewQty=$$(this.dataTableBody).children("tr").children("#id_"+prodData["ChID"]+"_"+prodData["SrcPosID"])[0];
                 if(existsTDNewQty){                                                                             //console.log("addProdToTable existsTDNewQty",existsTDNewQty.dataTableRowData);
                     let oldNewQty=parseFloat(existsTDNewQty.dataTableRowData["NewQty"]), newQty=prodData["NewQty"],
-                            oldQty=parseFloat(existsTDNewQty.dataTableRowData["Qty"]), qty=prodData["Qty"];
+                        oldQty=parseFloat(existsTDNewQty.dataTableRowData["Qty"]), qty=prodData["Qty"];
                     existsTDNewQty.innerText=newQty; existsTDNewQty.Qty=qty;
                     existsTDNewQty.dataTableRowData["NewQty"]=newQty;
                     existsTDNewQty.doSelect();
@@ -167,13 +167,13 @@
                 var tRows=(this.items)?this.items.length.toString():0;
                 if(tLoadedRows!==undefined) tRows=tLoadedRows.toString()+"/<br>"+tRows;
                 var dataTableFootTR=$$(this.dataTableFoot).find("tr"),
-                        totalQty=parseFloat(dataTableFootTR.find("td#totalQty").text())+qty,
-                        totalNewQty=parseFloat(dataTableFootTR.find("td#totalNewQty").text())+newQty;
+                    totalQty=parseFloat(dataTableFootTR.find("td#totalQty").text())+qty,
+                    totalNewQty=parseFloat(dataTableFootTR.find("td#totalNewQty").text())+newQty;
                 app7.innerPageUpdateTotalTable(this.dataTableFoot,{totalRows:tRows,totalQty:totalQty,totalNewQty:totalNewQty})
             },
             setScroll: function(innerElem){
                 var page=this.pageExcDeliveryProductsContent[0],
-                        absoluteElementTop = innerElem.getBoundingClientRect().top + page.scrollTop;
+                    absoluteElementTop = innerElem.getBoundingClientRect().top + page.scrollTop;
                 page.scrollTop= absoluteElementTop - (page.clientHeight / 2);//page.scrollTo(1, absoluteElementTop - (page.clientHeight / 2));-fail in mobileApp
             },
             loadExcData: function(){                                                                            //console.log('pageExcDeliveryProducts.html loadExcData excData=',this.item);
@@ -183,23 +183,23 @@
                 let self=this;                                                                                  //console.log('pageExcDeliveryProducts.html loadExcData excChID=',excChID, this);
                 app7.preloader.show();
                 app7.srvRequestJSON({url:'/mobile/excDelivery/getDataForExcDTable',conditions:{'ParentChID=':excChID},
-                            errorDialogMsg:"Не удалось получить товары перемещения на доставку с сервера!"},
-                        function(result,error){
-                            app7.preloader.hide();
-                            let resultItems=(result)?result.items:null;
-                            self.items=resultItems;
-                            if(!resultItems){ self.setInputProdBarcodeByState(); return; }
-                            app7.data.pageExcDeliveryProducts={inventDataItems:resultItems};                        //console.log('pageExcDeliveryProducts.html loadExcData resultItems=',resultItems);
-                            var params={ dataTableHeader:self.dataTableHeader, dataTableBody:self.dataTableBody,
-                                progressAction:function(tableData, ind,tableDataItem){
-                                    if(!tableDataItem){ self.setTotalInfo(0,0); return; }
-                                    self.setTotalInfo(tableDataItem["Qty"],tableDataItem["NewQty"],ind+1);
-                                }
-                            };
-                            app7.innerPageFillTableData(self, resultItems, params, function(tableData){
-                                self.setInputProdBarcodeByState({focus:true,enable:true});
-                            });
-                        })
+                        errorDialogMsg:"Не удалось получить товары перемещения на доставку с сервера!"},
+                    function(result,error){
+                        app7.preloader.hide();
+                        let resultItems=(result)?result.items:null;
+                        self.items=resultItems;
+                        if(!resultItems){ self.setInputProdBarcodeByState(); return; }
+                        app7.data.pageExcDeliveryProducts={inventDataItems:resultItems};                        //console.log('pageExcDeliveryProducts.html loadExcData resultItems=',resultItems);
+                        var params={ dataTableHeader:self.dataTableHeader, dataTableBody:self.dataTableBody,
+                            progressAction:function(tableData, ind,tableDataItem){
+                                if(!tableDataItem){ self.setTotalInfo(0,0); return; }
+                                self.setTotalInfo(tableDataItem["Qty"],tableDataItem["NewQty"],ind+1);
+                            }
+                        };
+                        app7.innerPageFillTableData(self, resultItems, params, function(tableData){
+                            self.setInputProdBarcodeByState({focus:true,enable:true});
+                        });
+                    })
             },
             barcodeInputEnter: function(scanBarcode){
                 this.setInputProdBarcodeByState({disable:true});
@@ -216,9 +216,9 @@
              */
             setInputProdBarcodeByState: function(opts){
                 var pageExcDeliveryProductsBarCodeInput=$$("#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsBarCodeInput"),
-                        pageExcDeliveryProductsBtnBarcodeInputEnter=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsBtnBarcodeInputEnter'),
-                        pageExcDeliveryProductsStateInfo=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsStateInfo'),
-                        pageExcDeliveryProductsStateName=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsStateName');
+                    pageExcDeliveryProductsBtnBarcodeInputEnter=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsBtnBarcodeInputEnter'),
+                    pageExcDeliveryProductsStateInfo=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsStateInfo'),
+                    pageExcDeliveryProductsStateName=$$('#pageExcDeliveryProductsToolbar #pageExcDeliveryProductsStateName');
                 if(!this.item||(this.item&&!this.item["IsStateOnConfirmation"])||!this.items){
                     pageExcDeliveryProductsBarCodeInput.attr('disabled',1);
                     pageExcDeliveryProductsBtnBarcodeInputEnter.attr('disabled',1);
@@ -250,42 +250,42 @@
             },
             showDialogExcDEditNewQty: function(tdNewQty,tableDataItem){
                 let thisInstance=this,
-                        dialogEditNewQty=app7.dialog.create({ title:"Фактическое количество", destroyOnClose:true, text:tableDataItem.ProdName,
-                            content:'<span id="dialogExcDEditNewQtyErrMsg" style="color:red;font-weight:bold;font-size:14px;line-height:1;"></span>'+
+                    dialogEditNewQty=app7.dialog.create({ title:"Фактическое количество", destroyOnClose:true, text:tableDataItem.ProdName,
+                        content:'<span id="dialogExcDEditNewQtyErrMsg" style="color:red;font-weight:bold;font-size:14px;line-height:1;"></span>'+
                             '<br><input id="inputExcDNewQty" type="number" style="text-align:center;border:solid 1px grey;padding:5px"></<input>',
-                            on:{
-                                open:function(){
-                                    $$("#dialogExcDEditNewQtyErrMsg").html("");
-                                    $$("#inputExcDNewQty").val(tableDataItem.NewQty).focus();document.getElementById("inputExcDNewQty").select();
-                                    document.getElementById("inputExcDNewQty").onkeydown=function(e){
-                                        if(e.key=="Escape"||e.code=="Escape"||e.keyCode==27)dialogEditNewQty.close();
-                                        else if(e.key=="Enter"||e.code=="Enter"||e.keyCode==13)dialogEditNewQty.params.buttons[0].onClick();
-                                    };
-                                },
+                        on:{
+                            open:function(){
+                                $$("#dialogExcDEditNewQtyErrMsg").html("");
+                                $$("#inputExcDNewQty").val(tableDataItem.NewQty).focus();document.getElementById("inputExcDNewQty").select();
+                                document.getElementById("inputExcDNewQty").onkeydown=function(e){
+                                    if(e.key=="Escape"||e.code=="Escape"||e.keyCode==27)dialogEditNewQty.close();
+                                    else if(e.key=="Enter"||e.code=="Enter"||e.keyCode==13)dialogEditNewQty.params.buttons[0].onClick();
+                                };
                             },
-                            buttons:[
-                                { text:"ВВОД",close:false,keyCodes:[13],onClick:function(){
-                                    let val=parseFloat($$("#inputExcDNewQty").val());
-                                    if(isNaN(val)){
-                                        $$("#dialogExcDEditNewQtyErrMsg").html("Неверное значение количества!");
-                                        $$("#inputExcDNewQty").focus();document.getElementById("inputExcDNewQty").select();
-                                        return;
-                                    }
-                                    thisInstance.storeNewQtyToExcD(tableDataItem.SrcPosID,tableDataItem.ProdID,val,
-                                            function(storeResult,errMsg){
-                                                if(errMsg){
-                                                    $$("#dialogExcDEditNewQtyErrMsg").html(errMsg);
-                                                    $$("#inputExcDNewQty").focus();document.getElementById("inputExcDNewQty").select();
-                                                    return;
-                                                }
-                                                var oldNewQty=tableDataItem["NewQty"];
-                                                tableDataItem["NewQty"]=val;tdNewQty.innerText=val.toString();
-                                                thisInstance.setTotalInfo(0,val-parseFloat(oldNewQty));
-                                                dialogEditNewQty.close();
-                                            })
-                                } },
-                                { text:"ОТМЕНА",close:true,keyCodes:[27] } ]
-                        }).open().on("closed",function(){ thisInstance.setInputProdBarcodeByState({focus:true}); });
+                        },
+                        buttons:[
+                            { text:"ВВОД",close:false,keyCodes:[13],onClick:function(){
+                                let val=parseFloat($$("#inputExcDNewQty").val());
+                                if(isNaN(val)){
+                                    $$("#dialogExcDEditNewQtyErrMsg").html("Неверное значение количества!");
+                                    $$("#inputExcDNewQty").focus();document.getElementById("inputExcDNewQty").select();
+                                    return;
+                                }
+                                thisInstance.storeNewQtyToExcD(tableDataItem.SrcPosID,tableDataItem.ProdID,val,
+                                    function(storeResult,errMsg){
+                                        if(errMsg){
+                                            $$("#dialogExcDEditNewQtyErrMsg").html(errMsg);
+                                            $$("#inputExcDNewQty").focus();document.getElementById("inputExcDNewQty").select();
+                                            return;
+                                        }
+                                        var oldNewQty=tableDataItem["NewQty"];
+                                        tableDataItem["NewQty"]=val;tdNewQty.innerText=val.toString();
+                                        thisInstance.setTotalInfo(0,val-parseFloat(oldNewQty));
+                                        dialogEditNewQty.close();
+                                    })
+                            } },
+                            { text:"ОТМЕНА",close:true,keyCodes:[27] } ]
+                    }).open().on("closed",function(){ thisInstance.setInputProdBarcodeByState({focus:true}); });
             },
             /**
              * callback = function(prodData,err)
@@ -295,10 +295,10 @@
                     var self=this;
                     if(!this.dialogAlertNoBarcode)
                         this.dialogAlertNoBarcode=
-                                app7.dialog.alert("Не удалось считать штрихкод или код товара!","Внимание",function(){
-                                    self.dialogAlertNoBarcode=null;
-                                    callback(null);
-                                });
+                            app7.dialog.alert("Не удалось считать штрихкод или код товара!","Внимание",function(){
+                                self.dialogAlertNoBarcode=null;
+                                callback(null);
+                            });
                     else
                         this.dialogAlertNoBarcode.open();
                     return;
@@ -306,27 +306,27 @@
                 let cInstance=this, parentChID=this.item.ChID;                                                  //console.log('pageExcDeliveryProducts.html storeInputValueToExc inputValue=',inputValue, this);
                 app7.preloader.show();
                 app7.srvPostRequestJSON({url:'/mobile/excDelivery/storeProdDataByCRUniInput',data:{value:inputValue,parentChID:parentChID},
-                            userErrorMsg:"Не удалось добавить товар в перемещение!"},
-                        function(result,errmsg){
-                            app7.preloader.hide();
-                            if(!result||!result.resultItem){ callback(null); return; }
-                            let inventProdData=result.resultItem;
-                            callback(inventProdData);
-                        })
+                        userErrorMsg:"Не удалось добавить товар в перемещение!"},
+                    function(result,errmsg){
+                        app7.preloader.hide();
+                        if(!result||!result.resultItem){ callback(null); return; }
+                        let excProdData=result.resultItem;
+                        callback(excProdData);
+                    })
             },
             storeNewQtyToExcD: function(srcPosID,prodID,newQty,callback){
                 let cInstance=this, parentChID=this.item.ChID;                                                  //console.log('pageExcDeliveryProducts.html storeNewQtyToExcD tSrcPosID=',tSrcPosID, tNewQty);
                 app7.preloader.show();
                 app7.srvPostRequestJSON({url:'/mobile/excDelivery/storeNewQtyData',data:{parentChID:parentChID,SrcPosID:srcPosID,NewQty:newQty},
                             showRequestErrorDialog:false},
-                        function(result,errmsg){
-                            app7.preloader.hide();// Hide Preloader
-                            if(!result||!result.resultItem){
-                                callback(null,(errmsg||"Не удалось сохранить данные на сервере!")); return;
-                            }
-                            let excDData=result.resultItem;
-                            callback(excDData);
-                        })
+                    function(result,errmsg){
+                        app7.preloader.hide();// Hide Preloader
+                        if(!result||!result.resultItem){
+                            callback(null,(errmsg||"Не удалось сохранить данные на сервере!")); return;
+                        }
+                        let excDData=result.resultItem;
+                        callback(excDData);
+                    })
             }
         }
     }

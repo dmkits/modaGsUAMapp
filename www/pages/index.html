@@ -85,6 +85,9 @@
                                         <a href="/pageExcDeliverySettings" class="panel-close">Перемещения товара<br> на доставку</a>
                                     </li>
                                     <li>
+                                        <a href="/pageExcFromStockSettings" class="panel-close">Перемещения товара<br> со склада</a>
+                                    </li>
+                                    <li>
                                         <a href="/pageSettingsVens" class="panel-close">Инвентаризации</a>
                                     </li>
                                 </ul>
@@ -163,19 +166,19 @@
 </div>
 <script>
     var $$=Dom7,
-        baseRoutes=[//-- App routes --
-            { path: '/home', pageName: 'home', options:{clearPreviousHistory:true,ignoreCache:true} },
-            { path: '/pageSettingsCommon', componentUrl: 'pageSettingsCommon.html'},
-            { path: '(.*)', url: './actionError' }// Default route (404 page). MUST BE THE LAST
-        ],
-        app7  = new Framework7({// Framework7 App main instance
-            id:'io.framework7.mobile.gabis',
-            root: '#app', // app7 root element
-            theme: 'ios', //for mobile app gabis ios!!! //'auto' - Automatic theme detection, Can be md, ios or aurora
-            routes: baseRoutes,
-            workingDoc:null
-        }),
-        mainView = app7.views.create('.view-main',{domCache:true,stackPages:true});                             //app7.dialog.alert('<span style="font-size:18px">1</span>', "debug")//IT'S FOR TEST
+            baseRoutes= [//-- App routes --
+                { path: '/home', pageName: 'home', options:{clearPreviousHistory:true,ignoreCache:true} },
+                { path: '/pageSettingsCommon', componentUrl: 'pageSettingsCommon.html'},
+                { path: '(.*)', url: './actionError' }// Default route (404 page). MUST BE THE LAST
+            ],
+            app7= new Framework7({// Framework7 App main instance
+                id:'io.framework7.mobile.gabis',
+                root: '#app', // app7 root element
+                theme: 'ios', //for mobile app gabis ios!!! //'auto' - Automatic theme detection, Can be md, ios or aurora
+                routes: baseRoutes,
+                workingDoc:null
+            }),
+            mainView= app7.views.create('.view-main',{domCache:true,stackPages:true});                             //app7.dialog.alert('<span style="font-size:18px">1</span>', "debug")//IT'S FOR TEST
     $$('#main-panel-left-pages').hide();
     app7.initData=function(){
         app7.data={};
@@ -184,6 +187,7 @@
         app7.data['useBCScanner']=false;
         app7.data['recsListDocCount']=50;
         app7.data['excDeliveryListDocCount']=50;
+        app7.data['excFromStockListDocCount']=50;
         app7.data['inventsListDocCount']=50;
         if(typeof(Storage)!=="undefined"){
             var serverURI=localStorage.getItem("settings-serverURI");
@@ -194,6 +198,8 @@
             if(recsListDocCount&&!isNaN(parseInt(recsListDocCount)))app7.data['recsListDocCount']=parseInt(recsListDocCount);
             var excDeliveryListDocCount=localStorage.getItem("settings-excDelivery-listDocCount");
             if(excDeliveryListDocCount&&!isNaN(parseInt(excDeliveryListDocCount)))app7.data['excDeliveryListDocCount']=parseInt(excDeliveryListDocCount);
+            var excFromStockListDocCount=localStorage.getItem("settings-excFromStock-listDocCount");
+            if(excFromStockListDocCount&&!isNaN(parseInt(excFromStockListDocCount)))app7.data['excFromStockListDocCount']=parseInt(excFromStockListDocCount);
             var inventsListDocCount=localStorage.getItem("settings-inventory-listDocCount");
             if(inventsListDocCount&&!isNaN(parseInt(inventsListDocCount)))app7.data['inventsListDocCount']=parseInt(inventsListDocCount);
         }else{// Sorry! No Web Storage support..
@@ -234,75 +240,75 @@
     });
     app7.loginProcess=function(){
         var username = $$('#mobileLogin-screen #mobileLogin-inputUsername').val(),
-            password = $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val();
+                password = $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val();
         app7.preloader.show();
         this.srvPostRequestJSON({url:'/login',data:{user:username,pswrd:password},errorDialogMsg:"Вход на сервер неудался!"},
-            function(result,errmsg){
-                app7.preloader.hide();
-                $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val("");
-                var mode=(result)?result.mode:null,modeIsDebug=(result)?result.modeIsDebug:null;
-                app7.data["appMode"]=mode; app7.data["appModeMsg"]= "";
-                if(modeIsDebug){
-                    $$('#mobileLogin-screen #mobileLogin-mainLogo').hide();
-                    $$('#mobileLogin-screen #mobileLogin-mainModeDebug').show()
-                            .html('ТЕСТОВЫЙ РЕЖИМ!!!'+((mode)?'<br><span style="font-size:18px">('+mode+')</span>':''));
-                    app7.data["appModeMsg"]= "!ТЕСТОВЫЙ РЕЖИМ!";
-                    $$('#appbar-modeMsg').text(app7.data["appModeMsg"]);
-                }else{
-                    $$('#mobileLogin-screen #mobileLogin-mainLogo').show();
-                    $$('#mobileLogin-screen #mobileLogin-mainModeDebug').hide();
-                    $$('#appbar-modeMsg').text("");
-                }
-                app7.data["dbName"]= (result)?result.dbName:null;
-                app7.data["dbUserError"]= (result)?result.dbUserError:null;
-                app7.data["dbUserName"]= (result)?result.dbUserName:null;
-                $$('#appbar-user').text(app7.data["dbUserName"]);
-                app7.data["dbEmpRole"]= (result)?result.dbEmpRole:null;
-                if(!result||!result.uuid){
-                    $$('#mobileLogin-screen #mobileLogin-inputUPswrd').focus(); return;
-                }
-                $$('#mobileLogin-screen #mobileLogin-inputUsername').val("");
-                if(typeof(Storage)!=="undefined"){
-                    localStorage.setItem("mobileLogin-username",username);
-                    var storeLoginUserpswrdItemName="mobileLogin-upswrd-"+username;
-                    if($$('#mobileLogin-screen #mobileLogin-checkboxStoreUser').prop('checked'))
-                        localStorage.setItem(storeLoginUserpswrdItemName,password);
-                    else
-                        localStorage.setItem(storeLoginUserpswrdItemName,null);
-                }else{// Sorry! No Web Storage support..
-                }
-                app7.data.uuid=result.uuid;
-                app7.request.setup({ headers: {'uuid':result.uuid,'aidcn':app7.data.aidcn} });
-                app7.setUserRoutes();
-            });
+                function(result,errmsg){
+                    app7.preloader.hide();
+                    $$('#mobileLogin-screen #mobileLogin-inputUPswrd').val("");
+                    var mode=(result)?result.mode:null,modeIsDebug=(result)?result.modeIsDebug:null;
+                    app7.data["appMode"]=mode; app7.data["appModeMsg"]= "";
+                    if(modeIsDebug){
+                        $$('#mobileLogin-screen #mobileLogin-mainLogo').hide();
+                        $$('#mobileLogin-screen #mobileLogin-mainModeDebug').show()
+                                .html('ТЕСТОВЫЙ РЕЖИМ!!!'+((mode)?'<br><span style="font-size:18px">('+mode+')</span>':''));
+                        app7.data["appModeMsg"]= "!ТЕСТОВЫЙ РЕЖИМ!";
+                        $$('#appbar-modeMsg').text(app7.data["appModeMsg"]);
+                    }else{
+                        $$('#mobileLogin-screen #mobileLogin-mainLogo').show();
+                        $$('#mobileLogin-screen #mobileLogin-mainModeDebug').hide();
+                        $$('#appbar-modeMsg').text("");
+                    }
+                    app7.data["dbName"]= (result)?result.dbName:null;
+                    app7.data["dbUserError"]= (result)?result.dbUserError:null;
+                    app7.data["dbUserName"]= (result)?result.dbUserName:null;
+                    $$('#appbar-user').text(app7.data["dbUserName"]);
+                    app7.data["dbEmpRole"]= (result)?result.dbEmpRole:null;
+                    if(!result||!result.uuid){
+                        $$('#mobileLogin-screen #mobileLogin-inputUPswrd').focus(); return;
+                    }
+                    $$('#mobileLogin-screen #mobileLogin-inputUsername').val("");
+                    if(typeof(Storage)!=="undefined"){
+                        localStorage.setItem("mobileLogin-username",username);
+                        var storeLoginUserpswrdItemName="mobileLogin-upswrd-"+username;
+                        if($$('#mobileLogin-screen #mobileLogin-checkboxStoreUser').prop('checked'))
+                            localStorage.setItem(storeLoginUserpswrdItemName,password);
+                        else
+                            localStorage.setItem(storeLoginUserpswrdItemName,null);
+                    }else{// Sorry! No Web Storage support..
+                    }
+                    app7.data.uuid=result.uuid;
+                    app7.request.setup({ headers: {'uuid':result.uuid,'aidcn':app7.data.aidcn} });
+                    app7.setUserRoutes();
+                });
     };
     app7.setUserRoutes=function(){
         app7.preloader.show();
         this.srvRequestJSON({url:'/mobile/getUserRoutes', errorDialogMsg:"Не удалось получить данные для загрузки!"},
-            function(result,errmsg){
-                app7.preloader.hide();
-                if(!result){
-                    mainView.router.navigate('/home');return;
-                }
-                mainView.router.routes=result;
-                var userRoutes={}, definePath;
-                for(var i=0; i<result.length; i++){
-                    var userRoutesItem=result[i];
-                    userRoutes[userRoutesItem.path]=true;
-                    if(!definePath&&userRoutesItem&&userRoutesItem.define) definePath=userRoutesItem.path;
-                    if(userRoutesItem&&userRoutesItem.url) userRoutesItem.url=userRoutesItem.url.replace("./mobile/","");
-                    if(userRoutesItem&&userRoutesItem.componentUrl) userRoutesItem.componentUrl=userRoutesItem.componentUrl.replace("/mobile/","")+".html";
-                }
-                var panelItems=$$("#main-panel-left-pages li a"),hasVisible=false;
-                for(var i=0; i<panelItems.length; i++){
-                    var panelItem=panelItems[i], visible=userRoutes[panelItem.getAttribute("href")];
-                    if(visible)$$(panelItem).show();else $$(panelItem).hide();
-                    hasVisible=visible||hasVisible;
-                }
-                if(hasVisible)$$('#main-panel-left-pages').show();
-                if(!definePath)return;
-                mainView.router.navigate(definePath);
-            });
+                function(result,errmsg){
+                    app7.preloader.hide();
+                    if(!result){
+                        mainView.router.navigate('/home');return;
+                    }
+                    mainView.router.routes=result;
+                    var userRoutes={}, definePath;
+                    for(var i=0; i<result.length; i++){
+                        var userRoutesItem=result[i];
+                        userRoutes[userRoutesItem.path]=true;
+                        if(!definePath&&userRoutesItem&&userRoutesItem.define) definePath=userRoutesItem.path;
+                        if(userRoutesItem&&userRoutesItem.url) userRoutesItem.url=userRoutesItem.url.replace("./mobile/","");
+                        if(userRoutesItem&&userRoutesItem.componentUrl) userRoutesItem.componentUrl=userRoutesItem.componentUrl.replace("/mobile/","")+".html";
+                    }
+                    var panelItems=$$("#main-panel-left-pages li a"),hasVisible=false;
+                    for(var i=0; i<panelItems.length; i++){
+                        var panelItem=panelItems[i], visible=userRoutes[panelItem.getAttribute("href")];
+                        if(visible)$$(panelItem).show();else $$(panelItem).hide();
+                        hasVisible=visible||hasVisible;
+                    }
+                    if(hasVisible)$$('#main-panel-left-pages').show();
+                    if(!definePath)return;
+                    mainView.router.navigate(definePath);
+                });
     };
 
     /**
@@ -324,7 +330,7 @@
         else if(params.conditions)
             for(var cName in params.conditions) requestData[cName.replace('=','~')]=params.conditions[cName];   //console.log('srvRequestJSON app7.request',params.url,'requestData=',requestData);
         this.request({method:params.method,url:params.url,data:requestData,
-                headers:{ 'x-requested-with': 'application/json; charset=utf-8' },
+            headers:{ 'x-requested-with':'application/json; charset=utf-8' },
             success:function(data){                                                                             //console.log('srvRequestJSON app7.request',params.url,'success data=',data); //app7.dialog.alert('<div style="height:500px;max-height:500px;font-size:8px;overflow:scroll">'+JSON.stringify(data)+'</span>', "debug")
                 var errMsg;
                 if(!params.errorDialogMsg)params.errorDialogMsg='Не удалось получить данные с сервера!';
@@ -356,13 +362,13 @@
             },
             error:function(xhr, status){                                                                    //console.log('srvRequestJSON app7.request',params.url,'error err=',xhr);
                 var state=status,
-                    msg=(!params.errorDialogMsg)?'Не удалось получить данные с сервера!':params.errorDialogMsg;
+                        msg=(!params.errorDialogMsg)?'Не удалось получить данные с сервера!':params.errorDialogMsg;
                 if(params.showRequestErrorDialog==false){
                     callback(undefined,msg+"<br>Статус="+state);return;
                 }
                 if(state===0){
                     msg+="<br>Неправильный или недействительный адрес сервера"+
-                        "<br>или доступ по указанному адресу сервера запрещен.";
+                            "<br>или доступ по указанному адресу сервера запрещен.";
                 } else
                     msg+="<br>Не удалось установить связь с сервером по указанному адресу.";
                 if(app7.srvRequestJSONDialogErr){
@@ -450,10 +456,10 @@
             var dthTR=dataTableHeaderRows[i], newTR;
             newTRs.push(newTR=dthTR.cloneNode(true)); dataTableBody.appendChild(newTR);
             var rowSelecting=newTR.getAttribute("rowSelecting"),
-                tdOnClickFunction=function(e){
-                    $$(dataTableBody).children('.tdSelectedRow').removeClass('tdSelectedRow');
-                    for(var i=0; i<newTRs.length; i++) newTRs[i].classList.add('tdSelectedRow');
-                };
+                    tdOnClickFunction=function(e){
+                        $$(dataTableBody).children('.tdSelectedRow').removeClass('tdSelectedRow');
+                        for(var i=0; i<newTRs.length; i++) newTRs[i].classList.add('tdSelectedRow');
+                    };
             for(var j=0; j<newTR.children.length; j++){
                 var newTD=newTR.children[j], dataTableItemName=newTD.getAttribute("dataItemName"), val;
                 newTD.dataTableRowData=tableDataItem;
