@@ -10,7 +10,9 @@ sudo chmod a=rw /dev/kvm
 # cordova build android --release -- --gradleArg=-PcdvMinSdkVersion=19
 cordova build
 
-# /home/dmkits/android-studio/bin/studio.sh
+/home/dmkits/android-studio/bin/studio.sh
+# OR
 # AndroidStudio > Tools > AVD Manager
 # and start Your Virtual Device (Nexus 5X API 29 x86)
+
 cordova emulate android
