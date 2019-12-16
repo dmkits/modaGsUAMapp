@@ -10,7 +10,7 @@
   "author": "dmkits",
   "license": "Apache-2.0",
   "dependencies": {
-    "cordova-android": "^8.0.0",
+    "cordova-android": "^8.1.0",
     "cordova-plugin-cipherlab-rs30": "git+https://github.com/mribbons/cordova-plugin-cipherlab-rs30.git",
     "cordova-plugin-crosswalk-webview": "^2.4.0",
     "cordova-plugin-keyboard": "^1.2.0",

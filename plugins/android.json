@@ -7,8 +7,8 @@
     "files": {}
   },
   "installed_plugins": {
-    "cordova-plugin-whitelist": {
-      "PACKAGE_NAME": "com.modaGsUa"
+    "cordova-plugin-cipherlab-rs30": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
     },
     "cordova-plugin-crosswalk-webview": {
       "XWALK_VERSION": "23+",
@@ -16,15 +16,15 @@
       "XWALK_COMMANDLINE": "--disable-pull-to-refresh-effect",
       "XWALK_MODE": "embedded",
       "XWALK_MULTIPLEAPK": "true",
-      "PACKAGE_NAME": "com.modaGsUa"
-    },
-    "cordova-plugin-cipherlab-rs30": {
-      "PACKAGE_NAME": "com.modaGsUa"
+      "PACKAGE_NAME": "ua.com.gabisUA"
     },
     "cordova-plugin-keyboard": {
       "PACKAGE_NAME": "ua.com.gabisUA"
     },
     "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
+    },
+    "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "ua.com.gabisUA"
     }
   },
