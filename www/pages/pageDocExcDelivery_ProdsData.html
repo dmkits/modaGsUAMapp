@@ -301,10 +301,7 @@
                 if(!opts)return;
                 barcodeInput.show(); btnBarcodeInputEnter.show();
                 stateInfo.hide(); stateName.hide();
-                if(opts.val!==undefined){
-                    barcodeInput.val(opts.val);
-                    this.keypressBuffer= opts.val;
-                }
+                if(opts.val!==undefined){ barcodeInput.val(opts.val); this.keypressBuffer= opts.val; }
                 if(opts.enable==true||opts.disable==false){
                     barcodeInput.removeAttr('disabled'); btnBarcodeInputEnter.removeAttr('disabled');
                     if(opts.focus==true) barcodeInput.focus();//!IT'S NECESSARILY CALL FOR LARGE DATATABLEBODY DID'NT SLOW DOWN!
@@ -318,7 +315,7 @@
             barcodeInputEnter: function(scanBarcode){
                 this.setInputProdBarcodeByState({disable:true});
                 app7.preloader.show();
-                var qty=1, self=this;
+                var self=this;
                 this.storeInputValueToExc(scanBarcode||this.pageDocExcDeliveryProdsDataBarCodeInput.val(),function(excProdData){
                     app7.preloader.hide();
                     if(excProdData) self.updContentTableData(excProdData);
@@ -454,7 +451,6 @@
                             callback(result.resultItem);
                         })
             },
-
             /**
              * callback = function(prodData)
              * if no result or no result.item call callback(null)
@@ -500,7 +496,6 @@
                             callback(result.resultItem);
                         });
             },
-
             setScroll: function(innerElem){
                 var page=this.pageContentDocExcDeliveryProdsData[0],
                         absoluteElementTop = innerElem.getBoundingClientRect().top + page.scrollTop;
