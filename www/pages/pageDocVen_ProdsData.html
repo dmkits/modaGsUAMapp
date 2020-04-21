@@ -48,10 +48,10 @@
                             <td class="mobile-vtable-cell-small-size" colspan="3"><div class="table-text tdProdName" dataItemName="ProdName"></div></td>
                         </tr>
                         <tr class="mobile-vtable-row-small-size">
-                            <!--<td class="mobile-vtable-cell-small-size" style="width:40px;border-top:none"><div class="table-text"></div></td>-->
                             <td class="mobile-vtable-cell-small-size" style=""><div class="table-text" dataItemName="ProdID"></div></td>
+                            <!--<td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text"  dataItemName="UM"></div></td>-->
                             <td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text tdQty" dataItemName="TQty"></div></td>
-                            <td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text tdNewQty" dataItemName="TNewQty"></div></td>
+                            <td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text tdNewQty" dataItemIDName="TSrcPosID" dataItemName="TNewQty"></div></td>
                         </tr>
                     </table>
                 </li>
@@ -114,37 +114,18 @@
             pageInit: function(e,page){
                 this.pageContentDocVenProdsData= $$(this.el).children("#pageContentDocVenProdsData");
                 if(!this.pageContentDocVenProdsData){ this.setInputProdBarcodeByState(); return; }
-                var contentTables= this.pageContentDocVenProdsData.children("table");
-                if(contentTables&&contentTables[0]) this.contentTableHeaderDomEl= contentTables[0];
-                if(contentTables&&contentTables[1]) this.contentTableFootDomEl= contentTables[1];
-                if(contentTables&&contentTables[2]) this.contentTableLHeaderDomEl= contentTables[2];
-                if(contentTables&&contentTables[3]) this.contentTableLFootDomEl= contentTables[3];
-                var it= this.$el.find('.virtual-list-li-table')[0].cloneNode(true);
-                it.style["display"]= "block";
-                var fillElTText= function(el){
-                    if(!el) return;
-                    var dataItemName= el.getAttribute("dataItemName"), dataItemIDName= el.getAttribute("dataItemIDName");
-                    if(dataItemName!=null) el.innerText= "{{"+dataItemName+"}}";
-                    if(dataItemIDName!=null) el.setAttribute("dataItemIDVal", "{{"+dataItemIDName+"}}");
-                };
-                var fillElsTTextProcess= function(el){
-                    if(!el)return;
-                    fillElTText(el);
-                    for(cel of el.childNodes){
-                        if(!cel||cel.nodeType==3/*text*/)continue;
-                        fillElsTTextProcess(cel);
-                    }
-                };
-                fillElsTTextProcess(it);
                 this.contentTableVirtList= app7.virtualList.create({
                     el: this.$el.find('.virtual-list-table'),// List Element
                     createUl: true,
                     ul: this.$el.find('.virtual-list-ul-table'),
                     cache: true,
                     items: [],//Pass array with items
-                    itemTemplate:it.outerHTML,// List item Template7 template
+                    itemTemplate:app7.getVListTemplate(this.$el.find('.virtual-list-li-table')[0]),//it.outerHTML,// List item Template7 template
                     height: 35// Item height
-                });                                                                                         console.log("this.contentTableVirtList",this.contentTableVirtList);
+                });
+                var contentTables= this.pageContentDocVenProdsData.children("table");
+                if(contentTables&&contentTables[1]) this.contentTableFootDomEl= contentTables[1];
+                if(contentTables&&contentTables[3]) this.contentTableLFootDomEl= contentTables[3];
                 this.pageDocVenProdsDataBarCodeInput= $$('#pageDocVenProdsDataToolbar #pageDocVenProdsDataBarCodeInput');
                 this.pageDocVenProdsDataBtnBarcodeInputEnter= $$('#pageDocVenProdsDataToolbar #pageDocVenProdsDataBtnBarcodeInputEnter');
                 this.pageDocVenProdsDataStateInfo= $$('#pageDocVenProdsDataToolbar #pageDocVenProdsDataStateInfo');
@@ -156,94 +137,147 @@
                     e.stopPropagation();
                 });
                 this.pageDocVenProdsDataBtnBarcodeInputEnter.on('click',function(){ self.barcodeInputEnter(); });
+                this.contentTableVirtList.$el.find('ul').on('click',function(e){
+                    var el= e.target;
+                    if(!el||!(el.tagName=="DIV"||el.tagName=="TD")) return;
+                    var path= e.path;
+                    if(!path) return;
+                    for(var pEl of path){
+                        if(pEl.tagName!="TABLE")continue;
+                        var pELparent= pEl.parentNode;
+                        if(!pELparent||pELparent.tagName!="LI"||pELparent.className.indexOf("virtual-list-li-table")<0)continue;
+                        self.selContentVTableDataRow(pEl.getAttribute("dataItemIDVal"));
+                        break;
+                    }
+                    var dataItemName= el.getAttribute("dataItemName");
+                    if(!dataItemName||dataItemName!="TNewQty") return;
+                    var dataItemIDVal= el.getAttribute("dataItemIDVal");
+                    self.contentTableTDNewQtyOnClick(e,el,self.contentTableDataItems[dataItemIDVal],self);
+                });
                 this.loadVenProdsData();
             },
             pageAfterIn: function(e,page){
                 var self=this, thisEl=this.el;
-                this.keypressBuffer="";
-                document.onkeypress= function(e){
-                    if(thisEl!=mainView.router.currentPageEl)return;
-                    if(self.isDocReadOnly())return;
-                    if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
-                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-                    if(!e||e.key==null)return;
-                    if(e.key=="Enter"){
-                        self.barcodeInputEnter(self.keypressBuffer);
-                        self.keypressBuffer="";
-                    }else {
-                        if(e.key.length==1) self.keypressBuffer+=e.key;
-                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-                    }
-                }
-                document.onkeydown= function(e){
-                    if(thisEl!=mainView.router.currentPageEl)return;
-                    if(self.isDocReadOnly())return;
-                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-                    if(!e||e.key==null)return;
-                    if(e.key=="Escape"){
-                        self.keypressBuffer="";
-                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-                    }else if(document.device&&document.device.barcodeScannerReaderAction&&e.keyCode==0&&!document.device.barcodeScannerStart){
-                        self.barcodeScannerWithEditQtyStart= true;
-                        document.device.barcodeScannerRequestScan();
-                        document.device.barcodeScannerStart= true;
-                    }
-                }
-                document.onkeyup= function(e){
-                    if(thisEl!=mainView.router.currentPageEl)return;
-                    if(self.isDocReadOnly())return;
-                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-                    if(!e||e.key==null)return;
-                    if(e.key=="Escape"){
-                        self.keypressBuffer="";
-                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-                    }else if(document.device&&document.device.barcodeScannerStart)
-                        document.device.barcodeScannerStart= false;
-                }
-                if(document.device&&document.device.barcodeScannerReaderAction){
-                    document.device.barcodeScannerReaderAction= function(barcode){
-                        if(thisEl!=mainView.router.currentPageEl)return;
-                        if(self.isDocReadOnly())return;
-                        if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
-                        if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-                        if(self.barcodeScannerWithEditQtyProcess)return;
-                        if(barcode) barcode= barcode.replace("\n","");
-                        if(!self.barcodeScannerWithEditQtyStart){ self.barcodeInputEnter(barcode); return; }
-                        self.setInputProdBarcodeByState({disable:true});
-                        self.barcodeScannerWithEditQtyStart= false;
-                        self.barcodeScannerWithEditQtyProcess= true;
-                        var docData=self.docData, docChID= (docData)?docData["ChID"]:null;
-                        self.findProdByBarcode(barcode,docChID,function(prodData){
-                            if(!prodData){
-                                self.barcodeScannerWithEditQtyProcess= false;
-                                self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
-                                return;
-                            }
-                            var srcPosID= prodData["TSrcPosID"];
-                            if(srcPosID!=null){
-                                var ctTRs= self.contentTableDataDomTRs[srcPosID];
-                                for(var ctTR of ctTRs){
-                                    if(ctTR.doSelect) ctTR.doSelect();
-                                    if(ctTR.clientHeight==0||ctTR.clientWidth==0) continue;
-                                    self.setScroll(ctTR);
-                                }
-                            }
-                            var qty= prodData["TQty"], newQty= prodData["TNewQty"];
-                            if(qty==null) qty=0; if(newQty==null) newQty=0;
-                            self.showDialogEditQty({"ProdName":prodData["ProdName"],"TQty":qty,"TNewQty":newQty},
-                                    /*okAction*/function(inputValQty,actionSuccess,actionError){
-                                        self.storeBarcodeWithQtyToVen(prodData["Barcode"],inputValQty,function(venProdData,errMsg){
-                                            if(errMsg){ actionError(errMsg); return; }
-                                            actionSuccess();
-                                            if(venProdData) self.updContentTableData(venProdData);
-                                        });
-                                    },/*closedAction*/function(){
-                                        self.barcodeScannerWithEditQtyProcess= false;
+                app7.setDocumentKeyActions(app7,
+                        {thisEl:thisEl, isNoAction:self.isDocReadOnly, dialog:self.dialogEditQty,
+                            inputEl:self.pageDocVenProdsDataBarCodeInput,
+                            keyEnterAction:self.barcodeInputEnter,
+                            barcodeScannerAction:function(barcode,EndAction){
+                                var docData=self.docData, docChID= (docData)?docData["ChID"]:null;
+                                self.findProdByBarcode(barcode,docChID,function(prodData){
+                                    if(!prodData){
+                                        EndAction();
                                         self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
-                                    });
+                                        return;
+                                    }
+                                    var srcPosID= prodData["TSrcPosID"];
+                                    if(srcPosID!=null){
+                                        var cvtIndex= self.contentTableDataIndexByTSrcPosID[srcPosID];
+                                        if(cvtIndex!=null){
+                                            self.contentTableVirtList.scrollToItem(cvtIndex);
+                                            self.selContentVTableDataRow(srcPosID,{setScroll:true});
+                                        }
+                                    }
+                                    var qty= prodData["TQty"], newQty= prodData["TNewQty"];
+                                    if(qty==null) qty=0; if(newQty==null) newQty=0;
+                                    self.showDialogEditQty({"ProdName":prodData["ProdName"],"TQty":qty,"TNewQty":newQty},
+                                            /*okAction*/function(inputValQty,actionSuccess,actionError){
+                                                self.storeBarcodeWithQtyToVen(prodData["Barcode"],inputValQty,function(venProdData,errMsg){
+                                                    if(errMsg){ actionError(errMsg); return; }
+                                                    self.updContentVTableData(venProdData);
+                                                    actionSuccess();
+                                                });
+                                            },/*closedAction*/function(){
+                                                EndAction();
+                                                self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
+                                            });
+                                });
+                            }
                         });
-                    }
-                }
+
+//                document.onkeypress= function(e){
+//                    if(thisEl!=mainView.router.currentPageEl)return;
+//                    if(self.isDocReadOnly())return;
+//                    if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
+//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
+//                    if(!e||e.key==null)return;
+//                    if(e.key=="Enter"){
+//                        self.barcodeInputEnter(self.keypressBuffer);
+//                        self.keypressBuffer="";
+//                    }else {
+//                        if(e.key.length==1) self.keypressBuffer+=e.key;
+//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
+//                    }
+//                }
+//                document.onkeydown= function(e){
+//                    if(thisEl!=mainView.router.currentPageEl)return;
+//                    if(self.isDocReadOnly())return;
+//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
+//                    if(!e||e.key==null)return;
+//                    if(e.key=="Escape"){
+//                        self.keypressBuffer="";
+//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
+//                    }else if(document.device&&document.device.barcodeScannerReaderAction&&e.keyCode==0&&!document.device.barcodeScannerStart){
+//                        self.barcodeScannerWithEditQtyStart= true;
+//                        document.device.barcodeScannerRequestScan();
+//                        document.device.barcodeScannerStart= true;
+//                    }
+//                }
+//                document.onkeyup= function(e){
+//                    if(thisEl!=mainView.router.currentPageEl)return;
+//                    if(self.isDocReadOnly())return;
+//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
+//                    if(!e||e.key==null)return;
+//                    if(e.key=="Escape"){
+//                        self.keypressBuffer="";
+//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
+//                    }else if(document.device&&document.device.barcodeScannerStart)
+//                        document.device.barcodeScannerStart= false;
+//                }
+//                if(document.device&&document.device.barcodeScannerReaderAction){
+//                    document.device.barcodeScannerReaderAction= function(barcode){
+//                        if(thisEl!=mainView.router.currentPageEl)return;
+//                        if(self.isDocReadOnly())return;
+//                        if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
+//                        if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
+//                        if(self.barcodeScannerWithEditQtyProcess)return;
+//                        if(barcode) barcode= barcode.replace("\n","");
+//                        if(!self.barcodeScannerWithEditQtyStart){ self.barcodeInputEnter(barcode); return; }
+//                        self.setInputProdBarcodeByState({disable:true});
+//                        self.barcodeScannerWithEditQtyStart= false;
+//                        self.barcodeScannerWithEditQtyProcess= true;
+//                        var docData=self.docData, docChID= (docData)?docData["ChID"]:null;
+//                        self.findProdByBarcode(barcode,docChID,function(prodData){
+//                            if(!prodData){
+//                                self.barcodeScannerWithEditQtyProcess= false;
+//                                self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
+//                                return;
+//                            }
+//                            var srcPosID= prodData["TSrcPosID"];
+//                            if(srcPosID!=null){
+//                                var ctTRs= self.contentTableDataDomTRs[srcPosID];
+//                                for(var ctTR of ctTRs){
+//                                    if(ctTR.doSelect) ctTR.doSelect();
+//                                    if(ctTR.clientHeight==0||ctTR.clientWidth==0) continue;
+//                                    self.setScroll(ctTR);
+//                                }
+//                            }
+//                            var qty= prodData["TQty"], newQty= prodData["TNewQty"];
+//                            if(qty==null) qty=0; if(newQty==null) newQty=0;
+//                            self.showDialogEditQty({"ProdName":prodData["ProdName"],"TQty":qty,"TNewQty":newQty},
+//                                    /*okAction*/function(inputValQty,actionSuccess,actionError){
+//                                        self.storeBarcodeWithQtyToVen(prodData["Barcode"],inputValQty,function(venProdData,errMsg){
+//                                            if(errMsg){ actionError(errMsg); return; }
+//                                            actionSuccess();
+//                                            if(venProdData) self.updContentTableData(venProdData);
+//                                        });
+//                                    },/*closedAction*/function(){
+//                                        self.barcodeScannerWithEditQtyProcess= false;
+//                                        self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
+//                                    });
+//                        });
+//                    }
+//                }
             },
             pageAfterOut: function(e,page){
                 if(this.progressBarEl) this.$app.progressbar.hide(this.progressBarEl);
@@ -265,8 +299,7 @@
                 return !this.docData||!this.docData["IsStateCreated"];
             },
             loadVenProdsData: function(){
-//                this.contentTableDataDomTRs={};
-                this.contentTableDataItems={}; this.contentTableDataIndexByTSrcPosID={}; this.contentTableDataBarcodes={};
+                this.contentTableDataItems={}; this.contentTableDataIndexByTSrcPosID={};
                 this.contentTableTotalData={};
                 this.setInputProdBarcodeByState({focus:false,enable:false});
                 var venData=this.docData, venChID=venData.ChID;
@@ -287,26 +320,7 @@
                                     (!resultItems)?{}:resultItems.reduce(function(result,arrItem,index,array){
                                         result[arrItem["TSrcPosID"]]= index; return result;
                                     },{});
-                            self.contentTableDataBarcodes=
-                                    (!resultItems)?{}:resultItems.reduce(function(result,arrItem,index,array){
-                                        result[arrItem["Barcode"]]=
-                                            {"Barcode":arrItem["Barcode"],"ProdID":arrItem["ProdID"],"ProdName":arrItem["ProdName"],"UM":arrItem["UM"]};
-                                        return result;
-                                    },{});
-//                            if(!resultItems){ self.setInputProdBarcodeByState(); return; }
-//                            if(error||!resultItems) return;
-//                            var params={ contentTableHeaderDomEl:self.contentTableHeaderDomEl,contentTableDataDomEl:self.contentTableDataDomEl,
-//                                contentTable2HeaderDomEl:self.contentTableLHeaderDomEl,contentTable2DataDomEl:self.contentTableLDataDomEl,
-//                                contentTableDataIDName:"TSrcPosID",
-//                                progressAction:function(tableData, ind,tableDataItem){
-//                                    if(!tableDataItem){ self.setTotalInfo(0,0); return; }
-//                                    self.setTotalInfo(tableDataItem["TQty"],tableDataItem["TNewQty"],ind+1);
-//                                }
-//                            };
-//                            app7.innerPageFillTableData(self, resultItems, params, function(contentTableData,contentTableDataDomTRs){
-//                                self.contentTableDataDomTRs= contentTableDataDomTRs;
-//                                self.setInputProdBarcodeByState({focus:false,enable:true});
-//                            })
+                            if(!resultItems){ self.setInputProdBarcodeByState(); return; }
                             self.updContentVTableDataItems(resultItems);
                         })
             },
@@ -324,7 +338,6 @@
             setTotalInfo: function(qty,newQty,tLoadedRows){
                 var sTotalRows= (this.contentTableData)?this.contentTableData.length.toString():0;
                 if(tLoadedRows!==undefined) sTotalRows= tLoadedRows.toString()+"/<br>"+sTotalRows;
-                var contentTableFootTR= $$(this.contentTableFootDomEl).find("tr");
                 this.contentTableTotalData["totalQty"]= this.contentTableTotalData["totalQty"]||0; this.contentTableTotalData["totalQty"]+= qty;
                 this.contentTableTotalData["totalNewQty"]= this.contentTableTotalData["totalNewQty"]||0; this.contentTableTotalData["totalNewQty"]+= newQty;
                 app7.innerPageUpdateTotalTable([this.contentTableFootDomEl,this.contentTableLFootDomEl],
@@ -346,7 +359,7 @@
                 if(!opts)return;
                 barcodeInput.show(); btnBarcodeInputEnter.show();
                 stateInfo.hide(); stateName.hide();
-                if(opts.val!==undefined){ barcodeInput.val(opts.val); this.keypressBuffer= opts.val; }
+                if(opts.val!==undefined) barcodeInput.val(opts.val);
                 if(opts.enable==true||opts.disable==false){
                     barcodeInput.removeAttr('disabled'); btnBarcodeInputEnter.removeAttr('disabled');
                     if(opts.focus==true) barcodeInput.focus();//!IT'S NECESSARILY CALL FOR LARGE DATATABLEBODY DID'NT SLOW DOWN!
@@ -410,6 +423,12 @@
                 }
                 if(cvtIndex==null)return;
                 this.contentTableVirtList.scrollToItem(cvtIndex);
+                this.selContentVTableDataRow(srcPosID,{setScroll:true});
+            },
+            /**
+             * params = { setScroll:true/false }
+             */
+            selContentVTableDataRow: function(srcPosID,params){
                 var cvtIndexELdom= this.contentTableVirtList.$el.find('table[dataitemidval="'+srcPosID+'"]');
                 if(!cvtIndexELdom)return;
                 this.contentTableVirtListSelItems= this.contentTableVirtListSelItems||[];
@@ -417,50 +436,19 @@
                 this.contentTableVirtListSelItems= [];
                 for(var i=0; i<cvtIndexELdom.length;i++){
                     var cvtIndexEL= cvtIndexELdom[i];
-                    this.setScroll(cvtIndexEL);
                     cvtIndexEL.classList.add('mobile-table-selectedRow');
                     this.contentTableVirtListSelItems.push(cvtIndexEL);
+                    if(params&&params.setScroll) this.setScroll(cvtIndexEL);
                 }
             },
-//            updContentTableData: function(prodData){
-//                if(!prodData) prodData={};
-//                var srcPosID= prodData["TSrcPosID"], ctTRs= this.contentTableDataDomTRs[srcPosID], ctDataItem= this.contentTableDataItems[srcPosID];
-//                if(!ctTRs){//not exists - add new
-//                    ctTRs= app7.innerPageCreateTableRow(this.contentTableHeaderDomEl,this.contentTableDataDomEl,prodData,this);
-//                    if(this.contentTableLHeaderDomEl&&this.contentTableLDataDomEl)
-//                        ctTRs= ctTRs.concat(app7.innerPageCreateTableRow(this.contentTableLHeaderDomEl,this.contentTableLDataDomEl,prodData,this));
-//                    this.contentTableDataDomTRs[srcPosID]= ctTRs;
-//                    if(!this.contentTableData) this.contentTableData=[];
-//                    this.contentTableData.push(prodData);
-//                    if(!this.contentTableDataItems) this.contentTableDataItems={};
-//                    this.contentTableDataItems[srcPosID]= prodData;
-//                    this.contentTableDataBarcodes[prodData["Barcode"]]=
-//                    {"Barcode":prodData["Barcode"],"ProdID":prodData["ProdID"],"ProdName":prodData["ProdName"],"UM":prodData["UM"]};
-//                    this.setTotalInfo(prodData["TQty"],prodData["TNewQty"]);
-//                }else{//exists - update exists
-//                    var oldQty= ctDataItem["TQty"], qty= prodData["TQty"], oldNewQty= ctDataItem["TNewQty"], newQty= prodData["TNewQty"];
-//                    ctDataItem["TQty"]= qty; ctDataItem["TNewQty"]= newQty;
-//                    this.setTotalInfo(qty-oldQty,newQty-oldNewQty);
-//                }
-//                for(var ctTR of ctTRs){
-//                    $$(ctTR).find("td[dataItemName=TNewQty] div").text(newQty);
-//                    if(ctTR.doSelect) ctTR.doSelect();
-//                    if(ctTR.clientHeight==0||ctTR.clientWidth==0) continue;
-//                    this.setScroll(ctTR);
-//                }
-//            },
             contentTableTDNewQtyOnClick: function(e,ownerTD,contentTableDataItem,self){
                 if(this.isDocReadOnly())return;
-                var td=e.target;
+                var tNewQtyEl=e.target;
                 this.showDialogEditQty(contentTableDataItem,/*ok/Enter*/function(inputValQty,actionSuccess,actionError){
                     self.storeNewQtyToVenProdData(contentTableDataItem["TSrcPosID"],contentTableDataItem["ProdID"],inputValQty,
                             function(storeResult,errMsg){
                                 if(errMsg){ if(actionError) actionError(errMsg); return; }
-                                var srcPosID= contentTableDataItem["TSrcPosID"], ctTRs= self.contentTableDataDomTRs[srcPosID];
-                                for(var ctTR of ctTRs) $$(ctTR).find("td[dataItemName=TNewQty] div").text(inputValQty);
-                                var oldNewQty= contentTableDataItem["TNewQty"];
-                                contentTableDataItem["TNewQty"]= inputValQty;
-                                self.setTotalInfo(0,inputValQty-oldNewQty);
+                                self.updContentVTableData(storeResult);
                                 if(actionSuccess) actionSuccess();
                             })
                 });
