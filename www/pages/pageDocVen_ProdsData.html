@@ -39,35 +39,6 @@
             </tr>
             </thead>
         </table>
-        <div class="mobile-table-small-size list virtual-list media-list virtual-list-table" style="width:100%;margin-top:33px;margin-bottom:30px;font-size:inherit;vertical-align:middle">
-            <ul class="virtual-list-ul-table" style="width:100%">
-                <li class="virtual-list-li-table" style="width:100%;display:none">
-                    <table width="100%" dataItemIDName="TSrcPosID">
-                        <tr class="mobile-vtable-row-small-size">
-                            <td class="mobile-vtable-cell-small-size" style="width:40px" rowspan="2"><div class="table-text tdSrcPosID" dataItemName="TSrcPosID"></div></td>
-                            <td class="mobile-vtable-cell-small-size" colspan="3"><div class="table-text tdProdName" dataItemName="ProdName"></div></td>
-                        </tr>
-                        <tr class="mobile-vtable-row-small-size">
-                            <td class="mobile-vtable-cell-small-size" style=""><div class="table-text" dataItemName="ProdID"></div></td>
-                            <!--<td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text"  dataItemName="UM"></div></td>-->
-                            <td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text tdQty" dataItemName="TQty"></div></td>
-                            <td class="mobile-vtable-cell-small-size" style="width:50px"><div class="table-text tdNewQty" dataItemIDName="TSrcPosID" dataItemName="TNewQty"></div></td>
-                        </tr>
-                    </table>
-                </li>
-            </ul>
-        </div>
-        <table class="mobile-table-small-size" width="100%" style="position:fixed;left:0px;bottom:0px;z-index:100">
-            <tfoot>
-            <tr>
-                <td id="totalRows" width="40px">0</td>
-                <td></td>
-                <td id="totalQty" width="50px">0</td>
-                <td id="totalNewQty" width="50px">0</td>
-            </tr>
-            </tfoot>
-        </table>
-
         <table class="mobile-table-large-size" width="100%" style="position:fixed;left:0px;top:88px;z-index:100">
             <thead>
             <tr>
@@ -80,28 +51,53 @@
                 <th width="50px">Факт.<br>кол-во</th>
             </tr>
             </thead>
-            <tbody style="display:none">
-            <tr rowSelecting="true" onCreated="contentTableTROnCreated">
-                <td width="40px" class="tdSrcPosID" dataItemName="TSrcPosID"><div class="table-text"></div></td>
-                <td width="110px" style="min-width:110px" class="text-centered" dataItemName="Barcode"><div class="table-text"></div></td>
-                <td width="50px" class="text-centered" dataItemName="ProdID"><div class="table-text"></div></td>
-                <td class="tdProdName" dataItemName="ProdName"><div class="table-text"></div></td>
-                <td width="50px" class="text-centered" dataItemName="UM"><div class="table-text"></div></td>
-                <td width="50px" class="tdQty" dataItemName="TQty"><div class="table-text"></div></td>
-                <td width="50px" class="tdNewQty" dataItemName="TNewQty" onClick="contentTableTDNewQtyOnClick"><div class="table-text"></div></td>
-            </tr>
-            </tbody>
         </table>
-
-        <!--<table class="mobile-table-large-size list virtual-list" width="100%" style="margin-top:33px;margin-bottom:30px;"></table>-->
-
+        <div class="list virtual-list media-list virtual-list-table" style="width:100%;margin-top:33px;margin-bottom:30px;font-size:inherit;vertical-align:middle">
+            <ul class="virtual-list-ul-table" style="width:100%">
+                <li class="virtual-list-li-table" style="width:100%;display:none">
+                    <table class="mobile-table-small-size" width="100%" dataItemIDName="TSrcPosID">
+                        <tr class="mobile-vtable-row-small-size">
+                            <td class="mobile-vtable-cell-small-size" width="40px" rowspan="2"><div class="table-text tdSrcPosID" dataItemName="TSrcPosID"></div></td>
+                            <td class="mobile-vtable-cell-small-size" colspan="3"><div class="table-text tdProdName" dataItemName="ProdName"></div></td>
+                        </tr>
+                        <tr class="mobile-vtable-row-small-size">
+                            <td class="mobile-vtable-cell-small-size" style=""><div class="table-text" dataItemName="ProdID"></div></td>
+                            <!--<td class="mobile-vtable-cell-small-size" width="50px"><div class="table-text"  dataItemName="UM"></div></td>-->
+                            <td class="mobile-vtable-cell-small-size" width="50px"><div class="table-text tdQty" dataItemName="TQty"></div></td>
+                            <td class="mobile-vtable-cell-small-size" width="50px"><div class="table-text tdNewQty" dataItemIDName="TSrcPosID" dataItemName="TNewQty"></div></td>
+                        </tr>
+                    </table>
+                    <table class="mobile-table-large-size" width="100%" dataItemIDName="TSrcPosID">
+                        <tr class="mobile-vtable-row-large-size">
+                            <td class="mobile-vtable-cell-large-size" width="40px"><div style="" class="table-text tdSrcPosID" dataItemName="TSrcPosID"></div></td>
+                            <td class="mobile-vtable-cell-large-size" width="110px" style="min-width:110px"><div class="table-text text-centered" dataItemName="Barcode"></div></td>
+                            <td class="mobile-vtable-cell-large-size" width="50px"><div class="table-text text-centered" dataItemName="ProdID"></div></td>
+                            <td class="mobile-vtable-cell-large-size"><div class="table-text tdProdName" dataItemName="ProdName"></div></td>
+                            <td class="mobile-vtable-cell-large-size" width="50px"><div class="table-text text-centered" dataItemName="UM"></div></td>
+                            <td class="mobile-vtable-cell-large-size" width="50px"><div class="table-text tdQty" dataItemName="TQty"></div></td>
+                            <td class="mobile-vtable-cell-large-size" width="50px"><div class="table-text tdNewQty" dataItemIDName="TSrcPosID" dataItemName="TNewQty"></div></td>
+                        </tr>
+                    </table>
+                </li>
+            </ul>
+        </div>
+        <table class="mobile-table-small-size" width="100%" style="position:fixed;left:0px;bottom:0px;z-index:100">
+            <tfoot>
+            <tr>
+                <td id="totalRows" width="40px" style="max-width:50px">0</td>
+                <td></td>
+                <td id="totalQty" width="50px" style="max-width:50px">0</td>
+                <td id="totalNewQty" width="50px" style="max-width:50px">0</td>
+            </tr>
+            </tfoot>
+        </table>
         <table class="mobile-table-large-size" width="100%" style="position:fixed;left:0px;bottom:0px;z-index:100">
             <tfoot>
             <tr>
-                <td id="totalRows" width="40px">0</td>
+                <td id="totalRows" width="40px" style="max-width:40px">0</td>
                 <td></td>
-                <td id="totalQty" width="50px">0</td>
-                <td id="totalNewQty" width="50px">0</td>
+                <td id="totalQty" width="50px" style="max-width:50px">0</td>
+                <td id="totalNewQty" width="50px" style="max-width:50px">0</td>
             </tr>
             </tfoot>
         </table>
@@ -121,10 +117,10 @@
                     cache: true,
                     items: [],//Pass array with items
                     itemTemplate:app7.getVListTemplate(this.$el.find('.virtual-list-li-table')[0]),//it.outerHTML,// List item Template7 template
-                    height: 35// Item height
+                    height: 35// Item height, 35 for item heght=33px with border
                 });
                 var contentTables= this.pageContentDocVenProdsData.children("table");
-                if(contentTables&&contentTables[1]) this.contentTableFootDomEl= contentTables[1];
+                if(contentTables&&contentTables[1]) this.contentTableFootDomEl= contentTables[2];
                 if(contentTables&&contentTables[3]) this.contentTableLFootDomEl= contentTables[3];
                 this.pageDocVenProdsDataBarCodeInput= $$('#pageDocVenProdsDataToolbar #pageDocVenProdsDataBarCodeInput');
                 this.pageDocVenProdsDataBtnBarcodeInputEnter= $$('#pageDocVenProdsDataToolbar #pageDocVenProdsDataBtnBarcodeInputEnter');
@@ -171,13 +167,7 @@
                                         return;
                                     }
                                     var srcPosID= prodData["TSrcPosID"];
-                                    if(srcPosID!=null){
-                                        var cvtIndex= self.contentTableDataIndexByTSrcPosID[srcPosID];
-                                        if(cvtIndex!=null){
-                                            self.contentTableVirtList.scrollToItem(cvtIndex);
-                                            self.selContentVTableDataRow(srcPosID,{setScroll:true});
-                                        }
-                                    }
+                                    if(srcPosID!=null) self.findAndSelContentVTableDataRow(srcPosID);
                                     var qty= prodData["TQty"], newQty= prodData["TNewQty"];
                                     if(qty==null) qty=0; if(newQty==null) newQty=0;
                                     self.showDialogEditQty({"ProdName":prodData["ProdName"],"TQty":qty,"TNewQty":newQty},
@@ -194,90 +184,6 @@
                                 });
                             }
                         });
-
-//                document.onkeypress= function(e){
-//                    if(thisEl!=mainView.router.currentPageEl)return;
-//                    if(self.isDocReadOnly())return;
-//                    if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
-//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-//                    if(!e||e.key==null)return;
-//                    if(e.key=="Enter"){
-//                        self.barcodeInputEnter(self.keypressBuffer);
-//                        self.keypressBuffer="";
-//                    }else {
-//                        if(e.key.length==1) self.keypressBuffer+=e.key;
-//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-//                    }
-//                }
-//                document.onkeydown= function(e){
-//                    if(thisEl!=mainView.router.currentPageEl)return;
-//                    if(self.isDocReadOnly())return;
-//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-//                    if(!e||e.key==null)return;
-//                    if(e.key=="Escape"){
-//                        self.keypressBuffer="";
-//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-//                    }else if(document.device&&document.device.barcodeScannerReaderAction&&e.keyCode==0&&!document.device.barcodeScannerStart){
-//                        self.barcodeScannerWithEditQtyStart= true;
-//                        document.device.barcodeScannerRequestScan();
-//                        document.device.barcodeScannerStart= true;
-//                    }
-//                }
-//                document.onkeyup= function(e){
-//                    if(thisEl!=mainView.router.currentPageEl)return;
-//                    if(self.isDocReadOnly())return;
-//                    if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-//                    if(!e||e.key==null)return;
-//                    if(e.key=="Escape"){
-//                        self.keypressBuffer="";
-//                        self.pageDocVenProdsDataBarCodeInput.val(self.keypressBuffer);
-//                    }else if(document.device&&document.device.barcodeScannerStart)
-//                        document.device.barcodeScannerStart= false;
-//                }
-//                if(document.device&&document.device.barcodeScannerReaderAction){
-//                    document.device.barcodeScannerReaderAction= function(barcode){
-//                        if(thisEl!=mainView.router.currentPageEl)return;
-//                        if(self.isDocReadOnly())return;
-//                        if(app7.srvRequestJSONDialogErr)return;//if error dialog show and don't close
-//                        if(self.dialogEditQty&&self.dialogEditQty.opened)return;//if show dialog edit qty
-//                        if(self.barcodeScannerWithEditQtyProcess)return;
-//                        if(barcode) barcode= barcode.replace("\n","");
-//                        if(!self.barcodeScannerWithEditQtyStart){ self.barcodeInputEnter(barcode); return; }
-//                        self.setInputProdBarcodeByState({disable:true});
-//                        self.barcodeScannerWithEditQtyStart= false;
-//                        self.barcodeScannerWithEditQtyProcess= true;
-//                        var docData=self.docData, docChID= (docData)?docData["ChID"]:null;
-//                        self.findProdByBarcode(barcode,docChID,function(prodData){
-//                            if(!prodData){
-//                                self.barcodeScannerWithEditQtyProcess= false;
-//                                self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
-//                                return;
-//                            }
-//                            var srcPosID= prodData["TSrcPosID"];
-//                            if(srcPosID!=null){
-//                                var ctTRs= self.contentTableDataDomTRs[srcPosID];
-//                                for(var ctTR of ctTRs){
-//                                    if(ctTR.doSelect) ctTR.doSelect();
-//                                    if(ctTR.clientHeight==0||ctTR.clientWidth==0) continue;
-//                                    self.setScroll(ctTR);
-//                                }
-//                            }
-//                            var qty= prodData["TQty"], newQty= prodData["TNewQty"];
-//                            if(qty==null) qty=0; if(newQty==null) newQty=0;
-//                            self.showDialogEditQty({"ProdName":prodData["ProdName"],"TQty":qty,"TNewQty":newQty},
-//                                    /*okAction*/function(inputValQty,actionSuccess,actionError){
-//                                        self.storeBarcodeWithQtyToVen(prodData["Barcode"],inputValQty,function(venProdData,errMsg){
-//                                            if(errMsg){ actionError(errMsg); return; }
-//                                            actionSuccess();
-//                                            if(venProdData) self.updContentTableData(venProdData);
-//                                        });
-//                                    },/*closedAction*/function(){
-//                                        self.barcodeScannerWithEditQtyProcess= false;
-//                                        self.setInputProdBarcodeByState({enable:true,focus:false,val:""});
-//                                    });
-//                        });
-//                    }
-//                }
             },
             pageAfterOut: function(e,page){
                 if(this.progressBarEl) this.$app.progressbar.hide(this.progressBarEl);
@@ -440,6 +346,12 @@
                     this.contentTableVirtListSelItems.push(cvtIndexEL);
                     if(params&&params.setScroll) this.setScroll(cvtIndexEL);
                 }
+            },
+            findAndSelContentVTableDataRow: function(srcPosID){
+                var cvtIndex= this.contentTableDataIndexByTSrcPosID[srcPosID];
+                if(cvtIndex==null)return;
+                this.contentTableVirtList.scrollToItem(cvtIndex);
+                this.selContentVTableDataRow(srcPosID,{setScroll:true});
             },
             contentTableTDNewQtyOnClick: function(e,ownerTD,contentTableDataItem,self){
                 if(this.isDocReadOnly())return;

@@ -311,7 +311,7 @@ var framework7MUIFunctions= {
             }else if(e.key.length==1){
                 p.inputEl.val(p.inputEl.val()+e.key);
             }
-        }
+        };
         document.onkeydown= function(e){
             if(p.thisEl!=mainView.router.currentPageEl)return;
             if(p.isNoAction())return;
@@ -324,7 +324,7 @@ var framework7MUIFunctions= {
                 document.device.barcodeScannerRequestScan();
                 document.device.barcodeScannerStart= true;
             }
-        }
+        };
         document.onkeyup= function(e){
             if(p.thisEl!=mainView.router.currentPageEl)return;
             if(p.isNoAction())return;
@@ -334,7 +334,7 @@ var framework7MUIFunctions= {
                 p.inputEl.val("");
             }else if(document.device&&document.device.barcodeScannerStart)
                 document.device.barcodeScannerStart= false;
-        }
+        };
         if(document.device&&document.device.barcodeScannerReaderAction){
             document.device.barcodeScannerReaderAction= function(barcode){
                 if(p.thisEl!=mainView.router.currentPageEl)return;
@@ -365,6 +365,9 @@ var framework7MUIFunctions= {
             fillElTText(el);
             for(cel of el.childNodes){
                 if(!cel||cel.nodeType==3/*text*/)continue;
+                if(cel.tagName=="TD"&&(cel.width||cel.style.width)){
+                    cel.style["max-width"]=cel.width; cel.style["min-width"]=cel.width;
+                }
                 fillElsTTextProcess(cel);
             }
         };
