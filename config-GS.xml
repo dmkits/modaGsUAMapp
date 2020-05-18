@@ -1,13 +1,13 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ua.com.sinta" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>mobile SINTA</name>
+<widget id="ua.com.gabisUA" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>GABIS.UA mobile</name>
     <description>
-        SINTA mobale app.
+        GABIS.UA mobile app.
     </description>
     <author email="dmkitSup@gmail.com" href="http://gabis.com.ua">
-        dmkits 2019-2020
+        dmkits 2019
     </author>
-    <icon src="www/img/ico-app-min-128.png" />
+    <icon src="www/img/ico-app-min-128-GS.png" />
     <content src="pages/index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

@@ -20,7 +20,7 @@
     <meta name="theme-color" content="#2196f3">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <link rel="shortcut icon" href="../img/ico-app-min-128.png">
+    <link rel="shortcut icon" href="../img/ico-app-min-128-KGS.png">
     <title>GABIS Mobile</title>
     <link rel="stylesheet" href="../framework7/css/framework7.min.css">
     <!--<link rel="stylesheet" href="../framework7/css/framework7.md.min.css">-->
@@ -59,7 +59,7 @@
                 { path:'/pageMAppSettingsCommon', componentUrl:'/mobile/pageMAppSettingsCommon'}
             ],
             app7= new Framework7({// Framework7 App main instance
-                id:'io.framework7.mobile.sinta', version:"3.3.2",
+                id:'io.framework7.mobile.gabis', version:"3.3.2",
                 root: '#app', // app7 root element
                 theme: 'ios', //for mobile app gabis ios!!! //'auto' - Automatic theme detection, Can be md, ios or aurora
                 routes: baseRoutes,
@@ -90,8 +90,8 @@
     };
     app7.setMAppRoutes(baseRoutes);
     app7.convertRoutesForMApp(baseRoutes);                                                                      //app7.dialog.alert('<span style="font-size:8px">'+JSON.stringify(result,null,2)+'</span>','debug');//IT'S FOR TEST
-    app7.appName= "SINTA.UA mobile";
-    app7.data={uuid:"", aidcn:"sinta"};//aidcn - application id config name
+    app7.appName= "GABIS.UA mobile";
+    app7.data={uuid:"", aidcn:"gabis"};//aidcn - application id config name
     app7.request.setup({ headers: {'uuid':app7.data.uuid,'aidcn':app7.data.aidcn} });
     app7.mAppAcceessToServer= function(uuid){
         app7.request.setup({ headers:{'uuid':uuid} });
