@@ -22,4 +22,6 @@ cordova emulate android
 keytool -genkey -v -keystore gabisMApp.keystore -alias gabisMApp -keyalg RSA -keysize 2048 -validity 10000
 #password restmonkey
 cordova build android --release -- --keystore="gabisMApp.keystore" --storePassword=<pass> --alias=GabisMApp --password=<keypass>
+#Sinta56123 Sinta56123ks
 #Gabis1151 Gabis1151ks
+
