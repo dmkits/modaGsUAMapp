@@ -5,10 +5,10 @@
         GABIS.UA mobile app.
     </description>
     <author email="dmkitSup@gmail.com" href="http://gabis.com.ua">
-        dmkits 2019
+        dmkits 2019-2020
     </author>
     <icon src="www/img/ico-app-min-128-GS.png" />
-    <content src="pages/index.html" />
+    <content src="pages/index-KGS.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
