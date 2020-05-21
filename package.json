@@ -1,8 +1,8 @@
 {
-  "name": "com.modaGsUa",
-  "displayName": "modaGsUa",
+  "name": "ua.com.sinta",
+  "displayName": "sinta",
   "version": "1.0.0",
-  "description": "modaGsUa.",
+  "description": "SINTA mobile.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
