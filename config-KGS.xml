@@ -43,5 +43,6 @@
     <plugin name="cordova-plugin-cipherlab-rs30" spec="https://github.com/mribbons/cordova-plugin-cipherlab-rs30" />
     <plugin name="cordova-plugin-keyboard" spec="^1.2.0" />
     <plugin name="cordova-plugin-statusbar" spec="^2.4.3" />
+    <plugin name="cordova-plugin-fullscreen" spec="^1.2.0" />
     <engine name="android" spec="^8.1.0" />
 </widget>

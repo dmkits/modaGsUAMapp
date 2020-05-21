@@ -40,11 +40,17 @@ document.device = {// Application Constructor
     onResume: function(){
         this.barcodeScannerReaderActivate();
     },
-
+    hideStatusBar: function(){
+        window.StatusBar.hide();
+    },
+    hideNavBar: function(){
+        AndroidFullScreen.immersiveMode(/*successFunction*/function(){}, /*errorFunction*/function(){});
+    },
     setUp: function(){
         window.Keyboard.shrinkView(false);
         //window.Keyboard.hideFormAccessoryBar(true);
-        window.StatusBar.hide();
+        this.hideStatusBar();
+        this.hideNavBar();
     },
     barcodeScannerReaderActivate: function(){
         if(!cordova || !cordova.plugins || !cordova.plugins.CipherlabRS30CordovaPlugin) return;

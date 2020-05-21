@@ -130,6 +130,12 @@ use:
 cordova plugin add cordova-plugin-statusbar
 use:
     window.StatusBar
+    window.StatusBar.hide();
+
+cordova plugin add cordova-plugin-fullscreen
+use:
+    // Hide system UI and keep it hidden (Android 4.4+ only)
+    AndroidFullScreen.immersiveMode(successFunction, errorFunction);
 
 14. for release build:
 cordova build android --release

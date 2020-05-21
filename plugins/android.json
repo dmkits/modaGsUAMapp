@@ -26,6 +26,9 @@
     },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "ua.com.gabisUA"
+    },
+    "cordova-plugin-fullscreen": {
+      "PACKAGE_NAME": "ua.com.gabisUA"
     }
   },
   "dependent_plugins": {}
